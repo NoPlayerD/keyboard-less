@@ -7,9 +7,11 @@ string __path = _path + @"/.KEYBOARDLESS";
 
 check();
 
-Folder root = new Folder();
-root.name = new List<string>();
-root.path = new List<string>();
+Dictionary<string,string> root = new Dictionary<string, string>();
+
+//Folder root = new Folder();
+//root.name = new List<string>();
+//root.path = new List<string>();
 
 Folder branch = new Folder();
 branch.name = new List<string>();
@@ -17,26 +19,26 @@ branch.path = new List<string>();
 
 foreach (string f in Directory.GetDirectories(__path))
 {
-    root.name.Add(f.Remove(0,f.LastIndexOf(@"\")+1));
-    root.path.Add(f);
+    root.Add(f.Remove(0,f.LastIndexOf(@"\")+1), f);
+}
+
+List<string> names = new List<string>();
+
+foreach (KeyValuePair<string,string> n in root)
+{
+    names.Add(n.Key);
 }
 
 var selected = AnsiConsole.Prompt(new SelectionPrompt<string>()
     .EnableSearch()
-    .AddChoices(root.name)
+    .AddChoices(names)
     .AddChoices("/Exit"));
 
-string sPath = null;
-int counter = 0;
-foreach (string ff in root.name)
-{
-    if (ff == selected.ToString())
-    {
-        sPath = root.path[counter];
-    }
-    counter++;
-}
 
+
+string sPath = root[selected.ToString()];
+
+Console.WriteLine(sPath);
 void check()
 {
     if (!Directory.Exists(__path))
