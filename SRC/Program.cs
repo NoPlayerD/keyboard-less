@@ -12,9 +12,20 @@ Dictionary<string,string> branch = new Dictionary<string, string>();
 
 //=====WAVES==========================================================================================
 
-check();
-addList(_keyboardless, root);
-menu(root);
+void WAVES(bool STAGE){
+
+if (!STAGE) // 0
+{
+    check();
+    addDirs(_keyboardless, root);
+    menu(root);
+}
+else // 1
+{
+    //..
+}
+
+}
 
 //====================================================================================================
 
@@ -32,8 +43,8 @@ void check()
     }
 }
 
-// adding items to the Dictionary
-void addList (string path, Dictionary<string,string> myDic){
+// adding directories to the Dictionary
+void addDirs (string path, Dictionary<string,string> myDic){
 
 myDic.Clear();
 foreach (string f in Directory.GetDirectories(path))
@@ -51,8 +62,8 @@ void menu(Dictionary<string,string> myDic){
     }
     var selected = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .EnableSearch()
-        .AddChoices(names)
-        .AddChoices("/Exit"));
+        .AddChoices("/Exit..")
+        .AddChoices(names));
         string sPath = myDic[selected.ToString()];
         Console.WriteLine(sPath);
 }
