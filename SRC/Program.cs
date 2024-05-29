@@ -3,47 +3,57 @@ using Spectre.Console;
 
 
 string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-string __path = _path + @"/.KEYBOARDLESS";
+string _keyboardless = _path + @"/.KEYBOARDLESS";
 
-check();
+//=====DICTIONARIES===================================================================================
 
 Dictionary<string,string> root = new Dictionary<string, string>();
+Dictionary<string,string> branch = new Dictionary<string, string>();
 
-//Folder root = new Folder();
-//root.name = new List<string>();
-//root.path = new List<string>();
+//=====WAVES==========================================================================================
 
-Folder branch = new Folder();
-branch.name = new List<string>();
-branch.path = new List<string>();
+check();
+addList(_keyboardless, root);
+menu(root);
 
-foreach (string f in Directory.GetDirectories(__path))
-{
-    root.Add(f.Remove(0,f.LastIndexOf(@"\")+1), f);
-}
-
-List<string> names = new List<string>();
-
-foreach (KeyValuePair<string,string> n in root)
-{
-    names.Add(n.Key);
-}
-
-var selected = AnsiConsole.Prompt(new SelectionPrompt<string>()
-    .EnableSearch()
-    .AddChoices(names)
-    .AddChoices("/Exit"));
+//====================================================================================================
 
 
 
-string sPath = root[selected.ToString()];
 
-Console.WriteLine(sPath);
+//=====VOIDS==========================================================================================
+
+// checking application path
 void check()
 {
-    if (!Directory.Exists(__path))
+    if (!Directory.Exists(_keyboardless))
     {
-        Directory.CreateDirectory(__path);
+        Directory.CreateDirectory(_keyboardless);
     }
+}
+
+// adding items to the Dictionary
+void addList (string path, Dictionary<string,string> myDic){
+
+myDic.Clear();
+foreach (string f in Directory.GetDirectories(path))
+{
+        myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);
+}}
+
+// creating menu of the items
+void menu(Dictionary<string,string> myDic){
+
+    List<string> names = new List<string>();
+    foreach (KeyValuePair<string,string> n in myDic)
+    {
+        names.Add(n.Key);
+    }
+    var selected = AnsiConsole.Prompt(new SelectionPrompt<string>()
+        .EnableSearch()
+        .AddChoices(names)
+        .AddChoices("/Exit"));
+        string sPath = myDic[selected.ToString()];
+        Console.WriteLine(sPath);
 }
 
