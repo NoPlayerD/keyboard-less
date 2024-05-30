@@ -12,6 +12,17 @@ string _dynmc = null;
 
 bool _stage = false;
 
+string _title = @"
+  _  __          _                   
+ | |/ /         | |                  
+ | ' / ___ _   _| |     ___  ___ ___ 
+ |  < / _ \ | | | |    / _ \/ __/ __|
+ | . \  __/ |_| | |___|  __/\__ \__ \
+ |_|\_\___|\__, |______\___||___/___/
+            __/ |                    
+           |___/                     
+";
+
 //=====DICTIONARIES===================================================================================
 
 Dictionary<string,string> root = new Dictionary<string, string>();
@@ -38,6 +49,7 @@ else // 1
 
 //=====RUNTIME========================================================================================
 
+Console.Title = "KeyboardLess";
 WAVES(_stage); // START THE APPLICATON
 
 //=====VOIDS==========================================================================================
@@ -78,7 +90,10 @@ void menu(Dictionary<string,string> myDic){
     {
         names.Add(n.Key);
     }
+    string myTitle;
+    if (_stage == false) {myTitle = _title;} else {myTitle = null;}
     var selected = AnsiConsole.Prompt(new SelectionPrompt<string>()
+        .Title(myTitle)
         .EnableSearch()
         .AddChoices("/..")
         .AddChoices(names));
