@@ -91,17 +91,18 @@ void menu(Dictionary<string,string> myDic){
         names.Add(n.Key);
     }
     string myTitle;
-    if (_stage == false) {myTitle = _title;} else {myTitle = null;}
+    string[] glob;
+    if (_stage == false) {myTitle = _title;glob = ["/..", "/PREFS"];} else {myTitle = null;glob = ["/.."];}
     var selected = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .Title(myTitle)
         .EnableSearch()
-        .AddChoices("/..")
+        .AddChoices(glob)
         .AddChoices(names));
 #endregion
 
 #region answering
 
-if (selected.ToString() != "/..")// if not exiting
+if (selected.ToString() != "/.." && selected.ToString() != "/PREFS")// if not exiting
 {
 
     if (_stage == false)// root
@@ -122,7 +123,7 @@ if (selected.ToString() != "/..")// if not exiting
         Process.Start(pi);
 }   
 }
-else// if exiting
+else if(selected.ToString() == "/..")// if exiting
 {
 
     if (_stage == false)// root
@@ -134,6 +135,11 @@ else// if exiting
         _stage = false;
         WAVES(_stage);
     }
+}
+else if(selected.ToString() == "/PREFS")// if going into preferences
+{
+    
+    
 }
 #endregion
 }
