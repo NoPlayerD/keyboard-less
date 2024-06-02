@@ -63,23 +63,6 @@ void check(){
     }
 }
 
-// adding directories to the Dictionary
-void addDirs (string path, Dictionary<string,string> myDic){
-
-myDic.Clear();
-foreach (string f in Directory.GetDirectories(path))
-{
-        myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);
-}}
-
-// adding files to the Dictionary
-void addFiles (string path, Dictionary<string,string> myDic){
-
-foreach (string f in FileSystem.GetFiles(path))
-{
-        myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);
-}}
-
 // creating menu of the items
 void menu(Dictionary<string,string> myDic){
 
