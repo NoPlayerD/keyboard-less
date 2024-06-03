@@ -23,6 +23,8 @@ string _title = @"
            |___/                     
 ";
 
+MENU menum = new MENU();
+
 //=====DICTIONARIES===================================================================================
 
 Dictionary<string,string> root = new Dictionary<string, string>();
@@ -35,14 +37,18 @@ void WAVES(bool STAGE){
 if (STAGE == false) // 0
 {
     check();
-    addDirs(_keyboardless, root);
-    menu(root);
+    root = menum.getDirectories(_keyboardless);
+    menum.CreateMenu(false,_title,root.Keys.ToArray(),false);
+    _dynmc = menum.selectedPath;
+    WAVES(true);
 }
 else // 1
 {
-    addDirs(_dynmc, branch);
-    addFiles(_dynmc, branch);
-    menu(branch);
+    branch = menum.getBoth(_dynmc);
+    menum.CreateMenu(true,null,branch.Keys.ToArray(),true);
+    //addDirs(_dynmc, branch);
+    //addFiles(_dynmc, branch);
+    //menu(branch);
 }
 
 }
@@ -62,68 +68,3 @@ void check(){
         Directory.CreateDirectory(_keyboardless);
     }
 }
-
-// creating menu of the items
-void menu(Dictionary<string,string> myDic){
-
-#region creating
-
-    List<string> names = new List<string>();
-    foreach (KeyValuePair<string,string> n in myDic)
-    {
-        names.Add(n.Key);
-    }
-    string myTitle;
-    string[] glob;
-    if (_stage == false) {myTitle = _title;glob = ["/..", "/PREFS"];} else {myTitle = null;glob = ["/.."];}
-    var selected = AnsiConsole.Prompt(new SelectionPrompt<string>()
-        .Title(myTitle)
-        .EnableSearch()
-        .AddChoices(glob)
-        .AddChoices(names));
-#endregion
-
-#region answering
-
-if (selected.ToString() != "/.." && selected.ToString() != "/PREFS")// if not exiting
-{
-
-    if (_stage == false)// root
-    {           
-        _stage = true;
-        _dynmc = _keyboardless + "/" + selected.ToString();
-        WAVES(_stage);
-    }
-    else// branch
-    {
-        string file = _dynmc +"/" + selected.ToString();
-        ProcessStartInfo pi = new ProcessStartInfo(file);
-        pi.Arguments = Path.GetFileName(file);
-        pi.UseShellExecute = true;
-        pi.WorkingDirectory = Path.GetDirectoryName(file);
-        pi.FileName = file;
-        pi.Verb = "OPEN";
-        Process.Start(pi);
-}   
-}
-else if(selected.ToString() == "/..")// if exiting
-{
-
-    if (_stage == false)// root
-    {
-    Environment.Exit(0);
-    }
-    else// branch
-    {
-        _stage = false;
-        WAVES(_stage);
-    }
-}
-else if(selected.ToString() == "/PREFS")// if going into preferences
-{
-    
-    
-}
-#endregion
-}
-

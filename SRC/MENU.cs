@@ -8,6 +8,9 @@ using Spectre.Console;
 class MENU
 {
 
+public string selectedPath { get; set; }
+public string selectedName { get; set; }
+
 public void CreateMenu(bool stage,string title, string[] choices, bool doClean)
 {
 if (doClean){Console.Clear();}
@@ -20,6 +23,9 @@ var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .EnableSearch()
         .AddChoices(exclude)
         .AddChoices(choices));
+
+selectedName = menu.ToString();
+selectedPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+selectedName;
 
 }
 
