@@ -8,7 +8,9 @@ using Spectre.Console;
 
 string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 string _keyboardless = _path + @"/.KEYBOARDLESS";
+
 string _dynmc = null;
+string _selected = null;
 
 bool _stage = false;
 
@@ -38,7 +40,7 @@ if (STAGE == false) // 0
 {
     check();
     root = menum.getDirectories(_keyboardless);
-    menum.CreateMenu(false,_title,root.Keys.ToArray(),false);
+    menum.CreateMenu(false,_title,root.Keys.ToArray(),true);
     _dynmc = menum.selectedPath;
     WAVES(true);
 }
@@ -46,9 +48,10 @@ else // 1
 {
     branch = menum.getBoth(_dynmc);
     menum.CreateMenu(true,null,branch.Keys.ToArray(),true);
-    //addDirs(_dynmc, branch);
-    //addFiles(_dynmc, branch);
-    //menu(branch);
+    _selected = menum.selectedName;
+
+    string file = _dynmc +"/" + _selected;
+    menum.ExecuteItem(file);
 }
 
 }

@@ -29,6 +29,16 @@ selectedPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationDa
 
 }
 
+public void ExecuteItem(string file)
+{
+        ProcessStartInfo pi = new ProcessStartInfo(file);
+        pi.Arguments = Path.GetFileName(file);
+        pi.UseShellExecute = true;
+        pi.WorkingDirectory = Path.GetDirectoryName(file);
+        pi.FileName = file;
+        pi.Verb = "OPEN";
+        Process.Start(pi);
+}
 
 public Dictionary<string,string> getFiles(string path)
 {
