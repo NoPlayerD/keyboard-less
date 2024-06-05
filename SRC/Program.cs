@@ -6,13 +6,15 @@ using Spectre.Console;
 
 //=====GLOBAL=========================================================================================
 
-string _path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-string _keyboardless = _path + @"/.KEYBOARDLESS";
+string _path_appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+string _path_keyless = _path_appData + @"/.KEYBOARDLESS";
+string _path_dynamic = null;
 
-string _dynmc = null;
-string _selected = null;
+string _selected_name = null;
+string _selected_path = null;
 
 bool _stage = false;
+
 
 string _title = @"
   _  __          _                   
@@ -36,7 +38,7 @@ Dictionary<string,string> branch = new Dictionary<string, string>();
 
 void WAVES(bool STAGE){
 
-if (STAGE == false) // 0
+if (STAGE == false) // root
 {
     check();
     root = menum.getDirectories(_keyboardless);
@@ -44,7 +46,7 @@ if (STAGE == false) // 0
     _dynmc = menum.selectedPath;
     WAVES(true);
 }
-else // 1
+else // branch
 {
     branch = menum.getBoth(_dynmc);
     menum.CreateMenu(true,null,branch.Keys.ToArray(),true);
