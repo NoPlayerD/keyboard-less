@@ -8,8 +8,10 @@ using Spectre.Console;
 class MENU
 {
 
-public string selectedPath { get; set; }
 public string selectedName { get; set; }
+public string selectedPath { get; set; }
+public string workingDir { get; set; }
+//====================================================================================================
 
 public void CreateMenu(bool stage,string title, string[] choices, bool doClean)
 {
@@ -24,8 +26,17 @@ var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .AddChoices(exclude)
         .AddChoices(choices));
 
-selectedName = menu.ToString();
-selectedPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+selectedName;
+selectedName = menu;
+if (stage == false)
+{
+        workingDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+selectedName;
+        selectedPath = workingDir;
+}
+else
+{
+        selectedPath= workingDir+"/"+selectedName;
+}
+
 
 }
 
@@ -40,13 +51,14 @@ public void ExecuteItem(string file)
         Process.Start(pi);
 }
 
+//====================================================================================================
+
 public Dictionary<string,string> getFiles(string path)
 {
 Dictionary<string,string> myDic = new Dictionary<string, string>();
 foreach (string f in FileSystem.GetFiles(path)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
 return myDic;
 }
-
 
 public Dictionary<string,string> getDirectories(string path)
 {
@@ -66,7 +78,5 @@ myDic = x2;
 
 return myDic;
 }
-
-
 
 }

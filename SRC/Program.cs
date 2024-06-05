@@ -5,7 +5,7 @@ using Microsoft.VisualBasic.FileIO;
 using Spectre.Console;
 
 //=====GLOBAL=========================================================================================
-
+#region GLOBAL
 string _path_appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 string _path_keyless = _path_appData + @"/.KEYBOARDLESS";
 string _path_dynamic = null;
@@ -28,32 +28,39 @@ string _title = @"
 ";
 
 MENU menum = new MENU();
-
+#endregion
 //=====DICTIONARIES===================================================================================
-
+#region DICTIONARIES
 Dictionary<string,string> root = new Dictionary<string, string>();
 Dictionary<string,string> branch = new Dictionary<string, string>();
-
+#endregion
 //=====WAVES==========================================================================================
 
 void WAVES(bool STAGE){
 
 if (STAGE == false) // root
 {
-    check();
-    root = menum.getDirectories(_keyboardless);
-    menum.CreateMenu(false,_title,root.Keys.ToArray(),true);
-    _dynmc = menum.selectedPath;
-    WAVES(true);
+    root = menum.getDirectories(_path_keyless);
+    menum.CreateMenu(STAGE,_title,root.Keys.ToArray(),true);
+    _selected_path = menum.selectedPath;
+    _selected_name = menum.selectedName;
+    if (_selected_name == "/.."){Environment.Exit(0);}
+    else{WAVES(true);}
 }
 else // branch
 {
-    branch = menum.getBoth(_dynmc);
-    menum.CreateMenu(true,null,branch.Keys.ToArray(),true);
-    _selected = menum.selectedName;
-
-    string file = _dynmc +"/" + _selected;
+    branch = menum.getBoth(_selected_path);
+    menum.CreateMenu(STAGE,null,branch.Keys.ToArray(),true);
+    _selected_name = menum.selectedName;
+    _selected_path = menum.selectedPath;
+    if (_selected_name == "/.."){_stage = false; WAVES(_stage);return; }
+    if (_selected_name != "/PREFS" || _selected_name != "/..")
+    {
+    string file = _selected_path;
     menum.ExecuteItem(file);
+    }
+    
+    
 }
 
 }
@@ -61,6 +68,7 @@ else // branch
 //=====RUNTIME========================================================================================
 
 Console.Title = "KeyboardLess";
+check();
 WAVES(_stage); // START THE APPLICATON
 
 //=====VOIDS==========================================================================================
@@ -68,8 +76,8 @@ WAVES(_stage); // START THE APPLICATON
 // checking application path
 void check(){
 
-    if (!Directory.Exists(_keyboardless))
+    if (!Directory.Exists(_path_keyless))
     {
-        Directory.CreateDirectory(_keyboardless);
+        Directory.CreateDirectory(_path_keyless);
     }
 }
