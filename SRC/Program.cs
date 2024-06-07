@@ -49,6 +49,7 @@ if (STAGE == false) // root
 }
 else // branch
 {
+    branch.Clear();
     branch = menum.getBoth(_selected_path);
     menum.CreateMenu(STAGE,null,branch.Keys.ToArray(),true);
     _selected_name = menum.selectedName;
@@ -56,11 +57,11 @@ else // branch
     if (_selected_name == "/.."){_stage = false; WAVES(_stage);return; }
     if (_selected_name != "/PREFS" || _selected_name != "/..")
     {
-    string file = _selected_path;
-    menum.ExecuteItem(file);
+        string file = _selected_path;
+        menum.InspectItem(file);
+        _selected_path = menum.selectedPath;
+        WAVES(true);
     }
-    
-    
 }
 
 }
@@ -80,4 +81,9 @@ void check(){
     {
         Directory.CreateDirectory(_path_keyless);
     }
+}
+
+void _LOG (string LOG)
+{
+    Console.WriteLine(LOG);
 }

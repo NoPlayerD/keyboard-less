@@ -51,6 +51,21 @@ public void ExecuteItem(string file)
         Process.Start(pi);
 }
 
+public void InspectItem (string path)
+{
+        string toDo =  Inspecting(path);
+
+        if (toDo == "Execute")
+        {
+                ExecuteItem(path);
+        }
+        else if (toDo == "Open File Location")
+        {
+                ExecuteItem(GetMainPath(path));
+        }
+
+        selectedPath = GetMainPath(path);
+}
 //====================================================================================================
 
 public Dictionary<string,string> getFiles(string path)
@@ -63,7 +78,8 @@ return myDic;
 public Dictionary<string,string> getDirectories(string path)
 {
 Dictionary<string,string> myDic = new Dictionary<string, string>();
-foreach (string f in Directory.GetDirectories(path)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
+string chars = @"/\";
+foreach (string f in Directory.GetDirectories(path)){myDic.Add(key: f.Remove(0,f.LastIndexOfAny(chars.ToCharArray())+1),value: f);}
 return myDic;
 }
 
@@ -77,6 +93,25 @@ x1.ToList().ForEach(x=>x2.Add(x.Key,x.Value));
 myDic = x2;
 
 return myDic;
+}
+
+private string Inspecting (string path)
+{
+        string name = path.Remove(0, path.LastIndexOf("/") + 1);
+        string[] choices = {"Execute","GO BACK!","Open File Location"};
+
+        var selection = AnsiConsole.Prompt(new SelectionPrompt<string>()
+        .Title(name)
+        .EnableSearch()
+        .AddChoices(choices));
+
+        return selection;
+}
+
+private string GetMainPath(string path)
+{
+        string me = path.Remove(path.LastIndexOf('/') +1, path.Length - (path.LastIndexOf('/') + 1));
+        return me;
 }
 
 }
