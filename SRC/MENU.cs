@@ -49,7 +49,7 @@ public void ExecuteItem(string file)
 
 public void InspectItem (string path, ENV Venvironment)
 {
-        string toDo =  Inspecting(path);
+        string toDo =  Inspecting(path, Venvironment);
 
         if (toDo == "Execute")
         {
@@ -91,9 +91,9 @@ public Dictionary<string,string> getBoth(string path)
         return myDic;
 }
 
-private string Inspecting (string path)
+private string Inspecting (string path, ENV branch)
 {
-        string name = path.Remove(0, path.LastIndexOf("/") + 1);
+        string name = branch.selectedName; //path.Remove(0, path.LastIndexOf("/") + 1);
         string[] choices = {"Execute","GO BACK!","Open File Location"};
 
         var selection = AnsiConsole.Prompt(new SelectionPrompt<string>()

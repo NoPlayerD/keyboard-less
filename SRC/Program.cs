@@ -37,12 +37,12 @@ if (STAGE == false) // root
 {
     root.dic = MENU.getDirectories(_path_keyless);
     MENU.CreateMenu(STAGE,_title,root.dic.Keys.ToArray(),true, root, root, branch);
-
     if (root.selectedName == "/.."){Environment.Exit(0);}
     else{WAVES(true);}
 }
 else // branch
 {
+    Console.Clear();
     branch.dic.Clear();
     branch.dic = MENU.getBoth(root.selectedPath);
     MENU.CreateMenu(STAGE,null,branch.dic.Keys.ToArray(),true, branch, root,branch);
@@ -51,7 +51,6 @@ else // branch
     {
         string file = branch.selectedPath;
         MENU.InspectItem(file, branch);
-        //branch.selectedPath = branchE.selectedPath;
         WAVES(true);
     }
 }
