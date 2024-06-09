@@ -5,21 +5,10 @@ using System.Net;
 using Microsoft.VisualBasic.FileIO;
 using Spectre.Console;
 
-class ENV
-{
-public string selectedName { get; set; }
-public string selectedPath { get; set; }
-public string workingDir { get; set; }
-}
-
-
-//====================================================================================================
-
-
 class MENU
 {
 
-public void CreateMenu(bool stage,string title, string[] choices, bool doClean, ENV environment)
+public void CreateMenu(bool stage,string title, string[] choices, bool doClean, ENV VE, ENV root, ENV branch)
 {
 if (doClean){Console.Clear();}
 
@@ -32,15 +21,16 @@ var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .AddChoices(exclude)
         .AddChoices(choices));
 
-environment.selectedName = menu;
+VE.selectedName = menu;
 if (stage == false)
 {
-        environment.workingDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+environment.selectedName;
-        environment.selectedPath = environment.workingDir;
+        root.workingDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+root.selectedName;
+        root.selectedPath = root.workingDir;
 }
 else
 {
-        environment.selectedPath= environment.workingDir+"/"+environment.selectedName;
+        branch.selectedPath= root.workingDir+"/"+branch.selectedName;
+        branch.workingDir = root.workingDir;
 }
 
 
@@ -57,7 +47,7 @@ public void ExecuteItem(string file)
         Process.Start(pi);
 }
 
-public void InspectItem (string path, ENV environment)
+public void InspectItem (string path, ENV Venvironment)
 {
         string toDo =  Inspecting(path);
 
@@ -70,7 +60,7 @@ public void InspectItem (string path, ENV environment)
                 ExecuteItem(GetMainPath(path));
         }
 
-        environment.selectedPath = GetMainPath(path);
+        Venvironment.selectedPath = GetMainPath(path);
 }
 //====================================================================================================
 
