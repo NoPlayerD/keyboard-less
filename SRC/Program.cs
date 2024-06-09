@@ -27,7 +27,10 @@ string _title = @"
            |___/                     
 ";
 
-MENU menum = new MENU();
+MENU MENU = new MENU();
+ENV rootE = new ENV();
+ENV branchE = new ENV();
+
 #endregion
 //=====DICTIONARIES===================================================================================
 #region DICTIONARIES
@@ -40,26 +43,26 @@ void WAVES(bool STAGE){
 
 if (STAGE == false) // root
 {
-    root = menum.getDirectories(_path_keyless);
-    menum.CreateMenu(STAGE,_title,root.Keys.ToArray(),true);
-    _selected_path = menum.selectedPath;
-    _selected_name = menum.selectedName;
+    root = MENU.getDirectories(_path_keyless);
+    MENU.CreateMenu(STAGE,_title,root.Keys.ToArray(),true, rootE);
+    _selected_path = rootE.selectedPath;
+    _selected_name = rootE.selectedName;
     if (_selected_name == "/.."){Environment.Exit(0);}
     else{WAVES(true);}
 }
 else // branch
 {
     branch.Clear();
-    branch = menum.getBoth(_selected_path);
-    menum.CreateMenu(STAGE,null,branch.Keys.ToArray(),true);
-    _selected_name = menum.selectedName;
-    _selected_path = menum.selectedPath;
+    branch = MENU.getBoth(_selected_path);
+    MENU.CreateMenu(STAGE,null,branch.Keys.ToArray(),true, branchE);
+    _selected_name = branchE.selectedName;
+    _selected_path = branchE.selectedPath;
     if (_selected_name == "/.."){_stage = false; WAVES(_stage);return; }
     if (_selected_name != "/PREFS" || _selected_name != "/..")
     {
         string file = _selected_path;
-        menum.InspectItem(file);
-        _selected_path = menum.selectedPath;
+        MENU.InspectItem(file, branchE);
+        _selected_path = branchE.selectedPath;
         WAVES(true);
     }
 }

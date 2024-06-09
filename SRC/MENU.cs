@@ -5,15 +5,21 @@ using System.Net;
 using Microsoft.VisualBasic.FileIO;
 using Spectre.Console;
 
-class MENU
+class ENV
 {
-
 public string selectedName { get; set; }
 public string selectedPath { get; set; }
 public string workingDir { get; set; }
+}
+
+
 //====================================================================================================
 
-public void CreateMenu(bool stage,string title, string[] choices, bool doClean)
+
+class MENU
+{
+
+public void CreateMenu(bool stage,string title, string[] choices, bool doClean, ENV environment)
 {
 if (doClean){Console.Clear();}
 
@@ -26,15 +32,15 @@ var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .AddChoices(exclude)
         .AddChoices(choices));
 
-selectedName = menu;
+environment.selectedName = menu;
 if (stage == false)
 {
-        workingDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+selectedName;
-        selectedPath = workingDir;
+        environment.workingDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+environment.selectedName;
+        environment.selectedPath = environment.workingDir;
 }
 else
 {
-        selectedPath= workingDir+"/"+selectedName;
+        environment.selectedPath= environment.workingDir+"/"+environment.selectedName;
 }
 
 
@@ -51,7 +57,7 @@ public void ExecuteItem(string file)
         Process.Start(pi);
 }
 
-public void InspectItem (string path)
+public void InspectItem (string path, ENV environment)
 {
         string toDo =  Inspecting(path);
 
@@ -64,35 +70,35 @@ public void InspectItem (string path)
                 ExecuteItem(GetMainPath(path));
         }
 
-        selectedPath = GetMainPath(path);
+        environment.selectedPath = GetMainPath(path);
 }
 //====================================================================================================
 
 public Dictionary<string,string> getFiles(string path)
 {
-Dictionary<string,string> myDic = new Dictionary<string, string>();
-foreach (string f in FileSystem.GetFiles(path)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
-return myDic;
+        Dictionary<string,string> myDic = new Dictionary<string, string>();
+        foreach (string f in FileSystem.GetFiles(path)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
+        return myDic;
 }
 
 public Dictionary<string,string> getDirectories(string path)
 {
-Dictionary<string,string> myDic = new Dictionary<string, string>();
-string chars = @"/\";
-foreach (string f in Directory.GetDirectories(path)){myDic.Add(key: f.Remove(0,f.LastIndexOfAny(chars.ToCharArray())+1),value: f);}
-return myDic;
+        Dictionary<string,string> myDic = new Dictionary<string, string>();
+        string chars = @"/\";
+        foreach (string f in Directory.GetDirectories(path)){myDic.Add(key: f.Remove(0,f.LastIndexOfAny(chars.ToCharArray())+1),value: f);}
+        return myDic;
 }
 
 public Dictionary<string,string> getBoth(string path)
 {
-Dictionary<string,string> myDic = new Dictionary<string, string>();
-var x1 = getFiles(path);
-var x2 = getDirectories(path);
+        Dictionary<string,string> myDic = new Dictionary<string, string>();
+        var x1 = getFiles(path);
+        var x2 = getDirectories(path);
 
-x1.ToList().ForEach(x=>x2.Add(x.Key,x.Value));
-myDic = x2;
+        x1.ToList().ForEach(x=>x2.Add(x.Key,x.Value));
+        myDic = x2;
 
-return myDic;
+        return myDic;
 }
 
 private string Inspecting (string path)
