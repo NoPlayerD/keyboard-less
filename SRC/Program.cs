@@ -10,8 +10,6 @@ using Spectre.Console;
 string _path_appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 string _path_keyless = _path_appData + @"/.KEYBOARDLESS";
 
-bool _stage = false;// 'false' = root, 'true' = branch
-
 string _title = @"
   _  __          _                   
  | |/ /         | |                  
@@ -25,31 +23,12 @@ string _title = @"
 
 WAVES wave = new WAVES();
 
-ENV root = new ENV();// root environment
-ENV branch = new ENV();// branch environment
+glob.title = _title;
+glob.keyLess = _path_keyless;
 
 #endregion
 //=====RUNTIME========================================================================================
 
 Console.Title = "KeyboardLess";
-check();
-wave.DEFINE(root, branch, _path_keyless, _title);
+Methods.checknCreate(_path_keyless);
 wave.START();
-
-//=====VOIDS==========================================================================================
-
-// checking application path
-void check(){
-
-    if (!Directory.Exists(_path_keyless))
-    {
-        Directory.CreateDirectory(_path_keyless);
-    }
-}
-
-class LOG
-{
-public void log (string LOG)
-{
-    Console.WriteLine(LOG);
-}}
