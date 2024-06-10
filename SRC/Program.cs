@@ -23,8 +23,6 @@ string _title = @"
            |___/                     
 ";
 
-MENU MENU = new MENU();
-
 WAVES wave = new WAVES();
 
 ENV root = new ENV();// root environment
@@ -49,7 +47,9 @@ void check(){
     }
 }
 
-void _LOG (string LOG)
+class LOG
+{
+public void log (string LOG)
 {
     Console.WriteLine(LOG);
-}
+}}

@@ -2,37 +2,82 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net;
+using System.Runtime.ConstrainedExecution;
 using Microsoft.VisualBasic.FileIO;
 using Spectre.Console;
 
 class MENU
 {
+//LOG log = new LOG();
 
-public void CreateMenu(bool stage,string title, string[] choices, bool doClean, ENV VE, ENV root, ENV branch)
+#region GLOBAL
+    //MENU menu = new MENU();
+    public ENV root { get; set; }
+    public ENV branch { get; set; }
+    public string title { get; set; }
+#endregion
+
+public void DEFINE(ENV roOt, ENV branCh, string keyless, string titLE)
+// root ve branch environment'lerini tanımla. 
 {
-if (doClean){Console.Clear();}
+    root = roOt;
+    branch = branCh;
+    title = titLE;
+}
 
-string[] exclude;// things that are not 'file, folder or category'
-if (stage == false) {exclude = ["/..", "/PREFS"];} else {exclude = ["/.."];}// define the 'exclude'
+//WAVES wave = new WAVES();
+
+public void CreateMenu(string[] choices, ENV virtualEnv)
+{
+
+bool stage;
+// root mu branch mi belirleyicisi.
+
+Console.Clear();
+// temizlen yaw
+
+
+if (virtualEnv == root)
+        {stage = false;}
+// root mu?
+else
+        {stage = true;}
+// branch mi?
+
+string[] exclude;
+// dosya veya klasör olmayan itemler.
+
+
+if (stage == false)
+        {exclude = ["/..", "/PREFS"];} 
+// root ise..
+else 
+        {exclude = ["/.."];}// define the 'exclude'
+// branch ise
+
 
 var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .Title(title)
         .EnableSearch()
         .AddChoices(exclude)
         .AddChoices(choices));
+// menümüzü oluşturalım :)
 
-VE.selectedName = menu;
+virtualEnv.selectedName = menu.ToString();
+// seçimimizi, aktif environment'imizdeki değişkene ekleyelim.
+
 if (stage == false)
 {
         root.workingDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+root.selectedName;
         root.selectedPath = root.workingDir;
 }
+// aktif env. root ise değişkenleri atayalım (menüdeki seçimimize göre)
 else
 {
         branch.selectedPath= root.workingDir+"/"+branch.selectedName;
         branch.workingDir = root.workingDir;
 }
-
+// aktif env. branch ise değişkenleri atayalım (menüdeki seçimimize göre)
 
 }
 

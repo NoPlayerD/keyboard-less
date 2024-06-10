@@ -1,16 +1,19 @@
-using System.ComponentModel.Design.Serialization;
-using System.Runtime.ConstrainedExecution;
-using Microsoft.VisualBasic;
+using System;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Net;
+using Microsoft.VisualBasic.FileIO;
+using Spectre.Console;
 
 class WAVES
 {
-
+//LOG log = new LOG();
 #region GLOBAL
     MENU menu = new MENU();
-    private ENV root { get; set; }
-    private ENV branch { get; set; }
-    private string keyLess { get; set; }
-    private string title { get; set; }
+    public ENV root { get; set; }
+    public ENV branch { get; set; }
+    public string keyLess { get; set; }
+    public string title { get; set; }
 #endregion
 
 public void DEFINE(ENV roOt, ENV branCh, string keyless, string titLE)
@@ -34,14 +37,14 @@ void RunRoot()
 {
     Console.Clear();
     // temiz bir sayfa :)
-
+    
     root.dic = menu.getDirectories(keyLess);
     // root isimli environment'in dictionary'sini, 'getFrom'daki klasörlerin isimleri ve konumları olarak ayarla. 
 
     var choices = root.dic.Keys.ToArray();
     // choices isimli dizimizi, root environment'imizdeki dictionary'daki klasör isimleri olarak ayarla.
 
-    menu.CreateMenu(false,title,choices,true, root);
+    menu.CreateMenu(choices, root);
     // root için menümüzü oluşturalım.
 
     if (root.selectedName == "/..")
@@ -67,7 +70,7 @@ void RunBranch(string getFrom)
     var choices = branch.dic.Keys.ToArray();
     // choices isimli dizimizi, branch environment'imizdeki dictionary'daki itemlerin isimleri olarak ayarla.
 
-    menu.CreateMenu(true,null,choices,true, branch);
+    menu.CreateMenu(choices, branch);
     // branch için menümüzü oluşturalım.
 
     if (branch.selectedName == "/..")
