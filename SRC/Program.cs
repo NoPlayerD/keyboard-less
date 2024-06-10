@@ -25,43 +25,18 @@ string _title = @"
 
 MENU MENU = new MENU();
 
-ENV root = new ENV();
-ENV branch = new ENV();
+WAVES wave = new WAVES();
+
+ENV root = new ENV();// root environment
+ENV branch = new ENV();// branch environment
 
 #endregion
-//=====WAVES==========================================================================================
-
-void WAVES(bool STAGE){
-
-if (STAGE == false) // root
-{
-    root.dic = MENU.getDirectories(_path_keyless);
-    MENU.CreateMenu(STAGE,_title,root.dic.Keys.ToArray(),true, root, root, branch);
-    if (root.selectedName == "/.."){Environment.Exit(0);}
-    else{WAVES(true);}
-}
-else // branch
-{
-    Console.Clear();
-    branch.dic.Clear();
-    branch.dic = MENU.getBoth(root.selectedPath);
-    MENU.CreateMenu(STAGE,null,branch.dic.Keys.ToArray(),true, branch, root,branch);
-    if (branch.selectedName == "/.."){_stage = false; WAVES(_stage);return; }
-    else
-    {
-        string file = branch.selectedPath;
-        MENU.InspectItem(file, branch);
-        WAVES(true);
-    }
-}
-
-}
-
 //=====RUNTIME========================================================================================
 
 Console.Title = "KeyboardLess";
 check();
-WAVES(_stage); // START THE APPLICATON
+wave.DEFINE(root, branch, _path_keyless, _title);
+wave.START();
 
 //=====VOIDS==========================================================================================
 
