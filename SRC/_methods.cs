@@ -1,4 +1,6 @@
+using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using Microsoft.VisualBasic.FileIO;
 using Spectre.Console;
 
@@ -13,6 +15,12 @@ public static void START()
 {
     if (glob.root != null || glob.branch != null || glob.keyLess != null || glob.title != null)
         {RunRoot();}
+}
+
+public static void SearchInAll(string getFrom)
+// tüm kategoriler içinde arama.
+{
+        RunBranch(getFrom);
 }
 
 static void RunRoot()
@@ -33,6 +41,11 @@ static void RunRoot()
     if (glob.root.selectedName == glob.excludeOfRoot[0])
         {Environment.Exit(0);}
         // çıkmak isteyen çıkabilir.
+    else if (glob.root.selectedName == glob.excludeOfRoot[1])
+    // tüm kategorilerde mi arican la.
+    {
+        Methods.searchInAll();
+    }
     else
         {RunBranch(glob.root.selectedPath);}
         // çıkmak istemeyen, seçtiği şık ile devam eder.
@@ -117,6 +130,7 @@ else
 var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .Title(title)
         .EnableSearch()
+        .PageSize(100)
         .AddChoices(exclude)
         .AddChoices(choices));
 // menümüzü oluşturalım :)
@@ -177,13 +191,14 @@ public static void InspectItem (string path, ENV Venvironment)
 public static Dictionary<string,string> getFiles(string path, bool SearchOption)
 // dosyaları alan dictionary
 {
-        Microsoft.VisualBasic.FileIO.SearchOption sO = new Microsoft.VisualBasic.FileIO.SearchOption();
+        Microsoft.VisualBasic.FileIO.SearchOption x1 = new Microsoft.VisualBasic.FileIO.SearchOption();
+        if (SearchOption == true){x1 = Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories;}
+        else{x1 = Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly;}
+        var sO = x1;
         
-        if (!SearchOption){sO = Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly;}
-        else{sO = Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories;}
 
         Dictionary<string,string> myDic = new Dictionary<string, string>();
-        foreach (string f in FileSystem.GetFiles(path)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
+        foreach (string f in FileSystem.GetFiles(path, searchType: sO)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
         return myDic;
 }
 
@@ -245,7 +260,26 @@ public class Methods
 
     public static void searchInAll()
     {
-        glob.branch.dic = MENU.getFiles(glob.keyLess, true);
+        Dictionary<string,string> d1 = new Dictionary<string, string>();
+        Dictionary<string,string> d2 = new Dictionary<string, string>();
+        
+        d1 = MENU.getFiles(glob.keyLess, true);
+        // d1'i belirle.
+
+        foreach (string x in MENU.getDirectories(glob.keyLess).Values)
+        // d2'yi belirle - aşama 1.
+        {
+                var x1 = (MENU.getDirectories(x));
+                x1.ToList().ForEach(y=>d2.Add(y.Key,y.Value));
+        }
+        
+        d2.ToList().ForEach(x =>d1.Add(x.Key, x.Value));
+        // d2'yi belirle - aşama 2.
+
+        glob.branch.dic = d2;
+        // artık işimizi branch'e taşımış olduk.
+
+        WAVES.SearchInAll(glob.keyLess);
     }
 
 }
