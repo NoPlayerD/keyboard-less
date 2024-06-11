@@ -9,6 +9,7 @@ using Spectre.Console;
 #region GLOBAL
 string _path_appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 string _path_keyless = _path_appData + @"/.KEYBOARDLESS";
+string _path_appStartup = AppDomain.CurrentDomain.BaseDirectory;
 
 string _title = @"
   _  __          _                   
@@ -24,11 +25,11 @@ string _title = @"
 WAVES wave = new WAVES();
 
 glob.title = _title;
-glob.keyLess = _path_keyless;
+glob.keyLess = _path_appStartup;//_path_keyless;
 
 #endregion
 //=====RUNTIME========================================================================================
 
 Console.Title = "KeyboardLess";
-Methods.checknCreate(_path_keyless);
+//Methods.checknCreate(_path_keyless);
 wave.START();

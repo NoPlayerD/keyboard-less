@@ -126,7 +126,7 @@ virtualEnv.selectedName = menu.ToString();
 
 if (stage == false)
 {
-        glob.root.workingDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.KEYBOARDLESS/"+glob.root.selectedName;
+        glob.root.workingDir = glob.keyLess+glob.root.selectedName;
         glob.root.selectedPath = glob.root.workingDir;
 }
 // aktif env. root ise değişkenleri atayalım (menüdeki seçimimize göre)
