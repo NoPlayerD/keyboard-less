@@ -20,7 +20,30 @@ public static void START()
 public static void SearchInAll(string getFrom)
 // tüm kategoriler içinde arama.
 {
-        RunBranch(getFrom);
+    Console.Clear();
+    // temiz bir sayfa :)
+
+    var choices = glob.branch.dic.Keys.ToArray();
+    // choices isimli dizimizi, branch environment'imizdeki dictionary'daki itemlerin isimleri olarak ayarla.
+
+    MENU.CreateMenu(choices, glob.branch);
+    // branch için menümüzü oluşturalım.
+
+    if (glob.branch.selectedName == glob.excludeOfBranch[0])
+        {RunRoot();return;}
+        // geri dönmek isteyen dönebilir (root'a).
+    else
+    {
+        string file = glob.branch.selectedPath;
+        // seçili itemin konumunu 'file' değişkenine ata.
+
+        MENU.InspectItem(file, glob.branch);
+        // seçili itemi incele, kullanıcının seçtiği işlemi uygula.
+
+        RunBranch(glob.branch.selectedPath);
+        // eski yerine geri dön.
+    }
+
 }
 
 static void RunRoot()
@@ -188,17 +211,11 @@ public static void InspectItem (string path, ENV Venvironment)
 
 //==================================================
 
-public static Dictionary<string,string> getFiles(string path, bool SearchOption)
+public static Dictionary<string,string> getFiles(string path, Microsoft.VisualBasic.FileIO.SearchOption searchOption)
 // dosyaları alan dictionary
 {
-        Microsoft.VisualBasic.FileIO.SearchOption x1 = new Microsoft.VisualBasic.FileIO.SearchOption();
-        if (SearchOption == true){x1 = Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories;}
-        else{x1 = Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly;}
-        var sO = x1;
-        
-
         Dictionary<string,string> myDic = new Dictionary<string, string>();
-        foreach (string f in FileSystem.GetFiles(path, searchType: sO)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
+        foreach (string f in FileSystem.GetFiles(path, searchOption)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
         return myDic;
 }
 
@@ -215,7 +232,7 @@ public static Dictionary<string,string> getBoth(string path)
 // dosyaları ve klasörleri alıp birleştiren dictionary
 {
         Dictionary<string,string> myDic = new Dictionary<string, string>();
-        var x1 = getFiles(path, false);
+        var x1 = getFiles(path, Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly);
         var x2 = getDirectories(path);
 
         x1.ToList().ForEach(x=>x2.Add(x.Key,x.Value));
@@ -263,7 +280,7 @@ public class Methods
         Dictionary<string,string> d1 = new Dictionary<string, string>();
         Dictionary<string,string> d2 = new Dictionary<string, string>();
         
-        d1 = MENU.getFiles(glob.keyLess, true);
+        d1 = MENU.getFiles(glob.keyLess,Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories);
         // d1'i belirle.
 
         foreach (string x in MENU.getDirectories(glob.keyLess).Values)
@@ -273,9 +290,10 @@ public class Methods
                 x1.ToList().ForEach(y=>d2.Add(y.Key,y.Value));
         }
         
-        d2.ToList().ForEach(x =>d1.Add(x.Key, x.Value));
+        d1.ToList().ForEach(x =>d2.Add(x.Key, x.Value));
         // d2'yi belirle - aşama 2.
 
+        glob.branch.dic.Clear();
         glob.branch.dic = d2;
         // artık işimizi branch'e taşımış olduk.
 
