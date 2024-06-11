@@ -12,4 +12,6 @@ public static class glob
     public static ENV branch { get; set; }= new ENV();
     public static string keyLess { get; set; }
     public static string title { get; set; }
+    public static string[] excludeOfRoot { get; set; }
+    public static string[] excludeOfBranch { get; set; }
 }

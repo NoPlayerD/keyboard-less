@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Globalization;
 using System.Net;
 using Microsoft.VisualBasic.FileIO;
 using Spectre.Console;
@@ -26,7 +27,13 @@ WAVES wave = new WAVES();
 
 glob.title = _title;
 glob.keyLess = _path_appStartup;//_path_keyless;
-
+glob.excludeOfRoot = [
+  """/"..""", 
+  """/"s - SEARCH IN ALL""",
+  """/"q  - QUICK ACCESS""",
+  """/"p  - PREFS"""
+];
+glob.excludeOfBranch = ["""/".."""];
 #endregion
 //=====RUNTIME========================================================================================
 

@@ -30,7 +30,7 @@ void RunRoot()
     menu.CreateMenu(choices, glob.root);
     // root için menümüzü oluşturalım.
 
-    if (glob.root.selectedName == "/..")
+    if (glob.root.selectedName == glob.excludeOfRoot[0])
         {Environment.Exit(0);}
         // çıkmak isteyen çıkabilir.
     else
@@ -56,7 +56,7 @@ void RunBranch(string getFrom)
     menu.CreateMenu(choices, glob.branch);
     // branch için menümüzü oluşturalım.
 
-    if (glob.branch.selectedName == "/..")
+    if (glob.branch.selectedName == glob.excludeOfBranch[0])
         {RunRoot();return;}
         // geri dönmek isteyen dönebilir (root'a).
     else
@@ -105,11 +105,11 @@ string title;
 
 
 if (stage == false)
-        {exclude = ["/..", "/PREFS"];
+        {exclude = glob.excludeOfRoot;
         title = glob.title;} 
 // root ise..
 else 
-        {exclude = ["/.."];
+        {exclude = glob.excludeOfBranch;
         title = null;}// define the 'exclude'
 // branch ise
 
