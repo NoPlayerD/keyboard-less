@@ -6,28 +6,28 @@ using Spectre.Console;
 class WAVES
 {
 
-MENU menu = new MENU();
+//MENU menu = new MENU();
 
-public void START()
+public static void START()
 // uygulamayı başlatma
 {
     if (glob.root != null || glob.branch != null || glob.keyLess != null || glob.title != null)
         {RunRoot();}
 }
 
-void RunRoot()
+static void RunRoot()
 // root aşamasında yapılacaklar..
 {
     Console.Clear();
     // temiz bir sayfa :)
     
-    glob.root.dic = menu.getDirectories(glob.keyLess);
+    glob.root.dic = MENU.getDirectories(glob.keyLess);
     // root isimli environment'in dictionary'sini, 'getFrom'daki klasörlerin isimleri ve konumları olarak ayarla. 
 
     var choices = glob.root.dic.Keys.ToArray();
     // choices isimli dizimizi, root environment'imizdeki dictionary'daki klasör isimleri olarak ayarla.
 
-    menu.CreateMenu(choices, glob.root);
+    MENU.CreateMenu(choices, glob.root);
     // root için menümüzü oluşturalım.
 
     if (glob.root.selectedName == glob.excludeOfRoot[0])
@@ -38,7 +38,7 @@ void RunRoot()
         // çıkmak istemeyen, seçtiği şık ile devam eder.
 }
 
-void RunBranch(string getFrom)
+static void RunBranch(string getFrom)
 // branch/yan aşamalarda yapılacaklar..
 {
     Console.Clear();
@@ -47,13 +47,13 @@ void RunBranch(string getFrom)
     glob.branch.dic.Clear();
     // eski itemleri sil.
 
-    glob.branch.dic = menu.getBoth(getFrom);
+    glob.branch.dic = MENU.getBoth(getFrom);
     // branch isimli environment'in dictionary'sini, 'getFrom'daki dosya ve klasörlerin isimleri ve konumları olarak ayarla.
 
     var choices = glob.branch.dic.Keys.ToArray();
     // choices isimli dizimizi, branch environment'imizdeki dictionary'daki itemlerin isimleri olarak ayarla.
 
-    menu.CreateMenu(choices, glob.branch);
+    MENU.CreateMenu(choices, glob.branch);
     // branch için menümüzü oluşturalım.
 
     if (glob.branch.selectedName == glob.excludeOfBranch[0])
@@ -64,7 +64,7 @@ void RunBranch(string getFrom)
         string file = glob.branch.selectedPath;
         // seçili itemin konumunu 'file' değişkenine ata.
 
-        menu.InspectItem(file, glob.branch);
+        MENU.InspectItem(file, glob.branch);
         // seçili itemi incele, kullanıcının seçtiği işlemi uygula.
 
         RunBranch(glob.branch.selectedPath);
@@ -76,10 +76,10 @@ void RunBranch(string getFrom)
 
 //==============================================================================================================
 
-class MENU
+public class MENU
 {
 
-public void CreateMenu(string[] choices, ENV virtualEnv)
+public static void CreateMenu(string[] choices, ENV virtualEnv)
 {
 
 bool stage;
@@ -139,7 +139,7 @@ else
 
 }
 
-public void ExecuteItem(string file)
+public static void ExecuteItem(string file)
 // seçili itemi çalıştırma
 {
         ProcessStartInfo pi = new ProcessStartInfo(file);
@@ -151,7 +151,7 @@ public void ExecuteItem(string file)
         Process.Start(pi);
 }
 
-public void InspectItem (string path, ENV Venvironment)
+public static void InspectItem (string path, ENV Venvironment)
 // seçili itemi inceleme
 {
         string toDo =  Inspecting(path, Venvironment);
@@ -174,15 +174,20 @@ public void InspectItem (string path, ENV Venvironment)
 
 //==================================================
 
-public Dictionary<string,string> getFiles(string path)
+public static Dictionary<string,string> getFiles(string path, bool SearchOption)
 // dosyaları alan dictionary
 {
+        Microsoft.VisualBasic.FileIO.SearchOption sO = new Microsoft.VisualBasic.FileIO.SearchOption();
+        
+        if (!SearchOption){sO = Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly;}
+        else{sO = Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories;}
+
         Dictionary<string,string> myDic = new Dictionary<string, string>();
         foreach (string f in FileSystem.GetFiles(path)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
         return myDic;
 }
 
-public Dictionary<string,string> getDirectories(string path)
+public static Dictionary<string,string> getDirectories(string path)
 // klasörleri alan dictionary
 {
         Dictionary<string,string> myDic = new Dictionary<string, string>();
@@ -191,11 +196,11 @@ public Dictionary<string,string> getDirectories(string path)
         return myDic;
 }
 
-public Dictionary<string,string> getBoth(string path)
+public static Dictionary<string,string> getBoth(string path)
 // dosyaları ve klasörleri alıp birleştiren dictionary
 {
         Dictionary<string,string> myDic = new Dictionary<string, string>();
-        var x1 = getFiles(path);
+        var x1 = getFiles(path, false);
         var x2 = getDirectories(path);
 
         x1.ToList().ForEach(x=>x2.Add(x.Key,x.Value));
@@ -204,7 +209,7 @@ public Dictionary<string,string> getBoth(string path)
         return myDic;
 }
 
-private string Inspecting (string path, ENV branch)
+private static string Inspecting (string path, ENV branch)
 // seçili iteme inceleme menüsü gösterme ve kullanıcının seçtiği işlemi döndürme
 {
         string name = branch.selectedName; //path.Remove(0, path.LastIndexOf("/") + 1);
@@ -218,7 +223,7 @@ private string Inspecting (string path, ENV branch)
         return selection;
 }
 
-private string GetMainPath(string path)
+private static string GetMainPath(string path)
 // gönderilen itemin konumunun ana(üst) konumunu gösterme.
 {
         string me = path.Remove(path.LastIndexOf('/') +1, path.Length - (path.LastIndexOf('/') + 1));
@@ -237,4 +242,10 @@ public class Methods
         {
             Directory.CreateDirectory(path);
         }}
+
+    public static void searchInAll()
+    {
+        glob.branch.dic = MENU.getFiles(glob.keyLess, true);
+    }
+
 }

@@ -23,8 +23,6 @@ string _title = @"
            |___/                     
 ";
 
-WAVES wave = new WAVES();
-
 glob.title = _title;
 glob.keyLess = _path_appStartup;//_path_keyless;
 glob.excludeOfRoot = [
@@ -39,4 +37,4 @@ glob.excludeOfBranch = ["""/".."""];
 
 Console.Title = "KeyboardLess";
 //Methods.checknCreate(_path_keyless);
-wave.START();
+WAVES.START();
