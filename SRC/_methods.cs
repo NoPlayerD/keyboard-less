@@ -17,8 +17,8 @@ public static void START()
         {RunRoot();}
 }
 
-public static void SearchInAll(string getFrom)
-// tüm kategoriler içinde arama.
+public static void siaMenuCreator(string getFrom)
+// search in all - siaStartLine'ın geldiği yer.
 {
     Console.Clear();
     // temiz bir sayfa :)
@@ -34,13 +34,14 @@ public static void SearchInAll(string getFrom)
         // geri dönmek isteyen dönebilir (root'a).
     else
     {
-        string file = glob.branch.selectedPath;
+        string file;
+        glob.branch.dic.TryGetValue(key: glob.branch.selectedName,out file);
         // seçili itemin konumunu 'file' değişkenine ata.
 
-        MENU.InspectItem(file, glob.branch);
+        MENU.InspectItem(file, glob.branch, true);
         // seçili itemi incele, kullanıcının seçtiği işlemi uygula.
 
-        RunBranch(glob.branch.selectedPath);
+        Methods.siaStartLine();
         // eski yerine geri dön.
     }
 
@@ -67,7 +68,7 @@ static void RunRoot()
     else if (glob.root.selectedName == glob.excludeOfRoot[1])
     // tüm kategorilerde mi arican la.
     {
-        Methods.searchInAll();
+        Methods.siaStartLine();
     }
     else
         {RunBranch(glob.root.selectedPath);}
@@ -100,7 +101,7 @@ static void RunBranch(string getFrom)
         string file = glob.branch.selectedPath;
         // seçili itemin konumunu 'file' değişkenine ata.
 
-        MENU.InspectItem(file, glob.branch);
+        MENU.InspectItem(file, glob.branch,false);
         // seçili itemi incele, kullanıcının seçtiği işlemi uygula.
 
         RunBranch(glob.branch.selectedPath);
@@ -188,7 +189,7 @@ public static void ExecuteItem(string file)
         Process.Start(pi);
 }
 
-public static void InspectItem (string path, ENV Venvironment)
+public static void InspectItem (string path, ENV Venvironment,bool isSIA)
 // seçili itemi inceleme
 {
         string toDo =  Inspecting(path, Venvironment);
@@ -205,7 +206,9 @@ public static void InspectItem (string path, ENV Venvironment)
                 ExecuteItem(GetMainPath(path));
         }
 
-        Venvironment.selectedPath = GetMainPath(path);
+        if (isSIA){Venvironment.selectedPath = glob.keyLess;}
+        else {Venvironment.selectedPath = GetMainPath(path);}
+
         // seçilmiş olarak veya en son işlem olarak geriye, aynı kategoriye dönme.
 }
 
@@ -258,7 +261,8 @@ private static string Inspecting (string path, ENV branch)
 private static string GetMainPath(string path)
 // gönderilen itemin konumunun ana(üst) konumunu gösterme.
 {
-        string me = path.Remove(path.LastIndexOf('/') +1, path.Length - (path.LastIndexOf('/') + 1));
+        string ex = @"/\";
+        string me = path.Remove(path.LastIndexOfAny(ex.ToCharArray()) +1, path.Length - (path.LastIndexOfAny(ex.ToCharArray()) + 1));
         return me;
 }
 }
@@ -275,7 +279,8 @@ public class Methods
             Directory.CreateDirectory(path);
         }}
 
-    public static void searchInAll()
+    public static void siaStartLine()
+    // search in all - dictionary'lerin belirlendiği başlangıç alanı.
     {
         Dictionary<string,string> d1 = new Dictionary<string, string>();
         Dictionary<string,string> d2 = new Dictionary<string, string>();
@@ -297,7 +302,7 @@ public class Methods
         glob.branch.dic = d2;
         // artık işimizi branch'e taşımış olduk.
 
-        WAVES.SearchInAll(glob.keyLess);
+        WAVES.siaMenuCreator(glob.keyLess);
     }
 
 }
