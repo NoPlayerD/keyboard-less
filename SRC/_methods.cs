@@ -70,6 +70,12 @@ static void RunRoot()
     {
         Methods.siaStartLine();
     }
+    else if(glob.root.selectedName == glob.excludeOfRoot[2])
+    // konum açma seçeneği.
+    {
+        MENU.ExecuteItem(glob.keyLess);
+        RunRoot();
+    }
     else
         {RunBranch(glob.root.selectedPath);}
         // çıkmak istemeyen, seçtiği şık ile devam eder.

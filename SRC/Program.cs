@@ -28,7 +28,7 @@ glob.keyLess = _path_appStartup;
 glob.excludeOfRoot = [
   """/"..""", 
   """/"s - SEARCH IN ALL""",
-  """/"q  - QUICK ACCESS""",
+  """/"o  - OPEN LOCATION""",
   """/"p  - PREFS"""
 ];
 glob.excludeOfBranch = ["""/".."""];
