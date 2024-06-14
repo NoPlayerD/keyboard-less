@@ -164,13 +164,13 @@ virtualEnv.selectedName = menu.ToString();
 
 if (stage == false)
 {
-        glob.root.workingDir = glob.keyLess+glob.root.selectedName;
+        glob.root.workingDir = Path.Combine(glob.keyLess, glob.root.selectedName);
         glob.root.selectedPath = glob.root.workingDir;
 }
 // aktif env. root ise değişkenleri atayalım (menüdeki seçimimize göre)
 else
 {
-        glob.branch.selectedPath= glob.root.workingDir+"/"+glob.branch.selectedName;
+        glob.branch.selectedPath= Path.Combine(glob.root.workingDir,glob.branch.selectedName);
         glob.branch.workingDir = glob.root.workingDir;
 }
 // aktif env. branch ise değişkenleri atayalım (menüdeki seçimimize göre)

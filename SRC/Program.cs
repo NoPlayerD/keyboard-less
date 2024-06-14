@@ -24,7 +24,7 @@ string _title = @"
 ";
 
 glob.title = _title;
-glob.keyLess = _path_appStartup;//_path_keyless;
+glob.keyLess = _path_appStartup;
 glob.excludeOfRoot = [
   """/"..""", 
   """/"s - SEARCH IN ALL""",
