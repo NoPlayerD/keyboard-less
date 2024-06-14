@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Net.Http.Headers;
 using Microsoft.VisualBasic.FileIO;
 using Spectre.Console;
+using System.Text.Json;
+using System.Globalization;
 
 
 class WAVES
@@ -277,13 +279,17 @@ private static string GetMainPath(string path)
 
 public class Methods
 {
-    public static void checknCreate(string path)
+    public static void checknCreate()
     {
     // belirlenen klasör var mı? yok ise oluştur.
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }}
+        if (!Directory.Exists(glob.keyLess))
+        {Directory.CreateDirectory(glob.keyLess);}
+        
+        string myJson = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json");
+        if (!File.Exists(myJson))
+                {createJson(myJson);}
+        else
+                {glob.runLocal = readLocalJson();}}
 
     public static void siaStartLine()
     // search in all - dictionary'lerin belirlendiği başlangıç alanı.
@@ -311,4 +317,41 @@ public class Methods
         WAVES.siaMenuCreator(glob.keyLess);
     }
 
+    private static void createJson(string json)
+    {
+        var options = new JsonWriterOptions { Indented = true };
+        using (var stream = File.Create (json))
+        using (var writer = new Utf8JsonWriter (stream, options))
+        {
+                writer.WriteStartObject();
+                // Property name and value specified in one call
+                /// writer.WritePropertyName("runLocal?");
+                writer.WriteBoolean("runLocal?",false);
+                // writer.WriteCommentValue ("Run application on binary(local) path? or default path?");
+                writer.WriteEndObject();
+        }
+
+    }
+
+    public static bool readLocalJson()
+    {
+        byte[] data = File.ReadAllBytes (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json"));
+        Utf8JsonReader reader = new Utf8JsonReader (data);
+
+        bool me = false;
+
+        while (reader.Read())
+        {
+        switch (reader.TokenType)
+        {
+        case JsonTokenType.False:
+                me = reader.GetBoolean();
+                break;
+        case JsonTokenType.True:
+                me = reader.GetBoolean();
+                break;
+        }
+        }
+        return me;
+    }
 }

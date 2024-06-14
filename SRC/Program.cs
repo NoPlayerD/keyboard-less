@@ -36,5 +36,6 @@ glob.excludeOfBranch = ["""/".."""];
 //=====RUNTIME========================================================================================
 
 Console.Title = "KeyboardLess";
-//Methods.checknCreate(_path_keyless);
-WAVES.START();
+Methods.checknCreate();
+Methods.readLocalJson();
+// WAVES.START();
