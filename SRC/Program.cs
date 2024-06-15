@@ -24,7 +24,6 @@ string _title = @"
 ";
 
 glob.title = _title;
-glob.keyLess = _path_appStartup;
 glob.excludeOfRoot = [
   """/"..""", 
   """/"s - SEARCH IN ALL""",
@@ -36,6 +35,12 @@ glob.excludeOfBranch = ["""/".."""];
 //=====RUNTIME========================================================================================
 
 Console.Title = "KeyboardLess";
+Methods.checkJson();
+if (glob.runLocal == true)
+  {glob.keyLess = _path_appStartup;}
+else
+  {glob.keyLess = _path_keyless;}
+
 Methods.checknCreate();
-Methods.readLocalJson();
-// WAVES.START();
+
+WAVES.START();

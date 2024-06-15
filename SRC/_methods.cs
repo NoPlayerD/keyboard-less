@@ -284,13 +284,17 @@ public class Methods
     // belirlenen klasör var mı? yok ise oluştur.
         if (!Directory.Exists(glob.keyLess))
         {Directory.CreateDirectory(glob.keyLess);}
-        
+    }
+    public static void checkJson()
+    {
         string myJson = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json");
+        
         if (!File.Exists(myJson))
-                {createJson(myJson);}
+                {createJson(myJson);
+                glob.runLocal = readLocalJson();}
         else
-                {glob.runLocal = readLocalJson();}}
-
+                {glob.runLocal = readLocalJson();}
+    }
     public static void siaStartLine()
     // search in all - dictionary'lerin belirlendiği başlangıç alanı.
     {
