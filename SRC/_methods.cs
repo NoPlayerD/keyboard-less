@@ -79,6 +79,7 @@ static void RunRoot()
         RunRoot();
     }
     else if(glob.root.selectedName == glob.excludeOfRoot[3])
+    // ayarlar (preferences) seçeneği.
     {
         MENU.createPrefsMenu(Methods.readLocalJson());
     }
@@ -226,14 +227,18 @@ public static void InspectItem (string path, ENV Venvironment,bool isSIA)
 
 
 public static void createPrefsMenu(bool jsonState)
+// ayarlar (preferences) menüsünün oluşturulması ve kontrolü..
 {
         string[] choices = {"Run Locally? - FALSE", "Run Locally? - TRUE"};
-        
+        // 1 seçeneğimiz olacak var 2 farklı türde de olabilir..
+
         int state;
         if (jsonState == true) {state = 1;}
         else {state = 0;}
+        // json dosyamızdaki değere göre hangi seçeneğin seçileceğine karar verme.
 
         Console.Clear();
+        // temiz bir sayfa :)
 
         var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .AddChoices(glob.excludeOfBranch[0])
@@ -241,6 +246,7 @@ public static void createPrefsMenu(bool jsonState)
         // menümüzü oluşturalım :)
 
         if (menu == choices[state])
+        // eğer "o" seçeneği seçersek seçeneği ve dosyayı düzenleme..
         {
                 bool old = Methods.readLocalJson();
                 bool newer;
@@ -257,9 +263,10 @@ public static void createPrefsMenu(bool jsonState)
         return;}
 
         createPrefsMenu(Methods.readLocalJson());
+        // çıkış yapmadıysak tekrar başa döner.
 }
 
-//==================================================
+//-------------------------
 
 public static Dictionary<string,string> getFiles(string path, Microsoft.VisualBasic.FileIO.SearchOption searchOption)
 // dosyaları alan dictionary
@@ -320,12 +327,13 @@ public class Methods
      public static string myJson {get;} = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json");
 
     public static void checknCreate()
+    // uygulamanın çalışacağı klasör var mı? yok ise oluştur.
     {
-    // belirlenen klasör var mı? yok ise oluştur.
         if (!Directory.Exists(glob.keyLess))
         {Directory.CreateDirectory(glob.keyLess);}
     }
     public static void checknDefineJson()
+    // json dosyamız var mı diye kontrol eder, yok ise oluşturur, global değerleri atar/günceller
     {
         if (!File.Exists(myJson))
                 {createJson(myJson, false);
@@ -365,6 +373,7 @@ public class Methods
         WAVES.siaMenuCreator(glob.keyLess);
     }
     public static void createJson(string json, bool state)
+    // json dosyamızı oluşturur.
     {
         var options = new JsonWriterOptions { Indented = true };
         using (var stream = File.Create (json))
@@ -380,6 +389,7 @@ public class Methods
 
     }
     public static bool readLocalJson()
+    // json dosyamızı okur ve bool değerimizi döndürür.
     {
         byte[] data = File.ReadAllBytes (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json"));
         Utf8JsonReader reader = new Utf8JsonReader (data);

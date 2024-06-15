@@ -21,10 +21,10 @@ string _title = @"
 
 glob.title = _title;
 glob.excludeOfRoot = [
-  """/"..""", 
-  """/"s - SEARCH IN ALL""",
-  """/"o  - OPEN LOCATION""",
-  """/"p  - PREFS"""
+  """|"..""", 
+  """|"s  - SEARCH IN ALL""",
+  """|"o  - OPEN LOCATION""",
+  """|"p  - PREFERENCES"""
 ];
 glob.excludeOfBranch = ["""/".."""];
 #endregion
