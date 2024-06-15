@@ -21,5 +21,5 @@ public static class VARs
 {
    public static string _path_appData {get;} = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
     public static string _path_keyless {get;} = _path_appData + @"/.KEYBOARDLESS";
-    public static string _path_appStartup {get;} = AppDomain.CurrentDomain.BaseDirectory;
+    public static string _path_appStartup {get;} = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "localData");
 }
