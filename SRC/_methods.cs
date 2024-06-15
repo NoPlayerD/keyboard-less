@@ -10,8 +10,6 @@ using System.Globalization;
 class WAVES
 {
 
-//MENU menu = new MENU();
-
 public static void START()
 // uygulamayı başlatma
 {
@@ -268,11 +266,11 @@ public static void createPrefsMenu(bool jsonState)
 
 //-------------------------
 
-public static Dictionary<string,string> getFiles(string path, Microsoft.VisualBasic.FileIO.SearchOption searchOption)
+public static Dictionary<string,string> getFiles(string path)
 // dosyaları alan dictionary
 {
         Dictionary<string,string> myDic = new Dictionary<string, string>();
-        foreach (string f in FileSystem.GetFiles(path, searchOption)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
+        foreach (string f in FileSystem.GetFiles(path)){myDic.Add(key: f.Remove(0,f.LastIndexOf(@"\")+1),value: f);}
         return myDic;
 }
 
@@ -289,7 +287,7 @@ public static Dictionary<string,string> getBoth(string path)
 // dosyaları ve klasörleri alıp birleştiren dictionary
 {
         Dictionary<string,string> myDic = new Dictionary<string, string>();
-        var x1 = getFiles(path, Microsoft.VisualBasic.FileIO.SearchOption.SearchTopLevelOnly);
+        var x1 = getFiles(path);
         var x2 = getDirectories(path);
 
         x1.ToList().ForEach(x=>x2.Add(x.Key,x.Value));
@@ -336,7 +334,7 @@ public class Methods
     // json dosyamız var mı diye kontrol eder, yok ise oluşturur, global değerleri atar/günceller
     {
         if (!File.Exists(myJson))
-                {createJson(myJson, false);
+                {createJson(myJson, true);
                 glob.runLocal = readLocalJson();}
         else
                 {glob.runLocal = readLocalJson();}
@@ -353,13 +351,17 @@ public class Methods
         Dictionary<string,string> d1 = new Dictionary<string, string>();
         Dictionary<string,string> d2 = new Dictionary<string, string>();
         
-        d1 = MENU.getFiles(glob.keyLess,Microsoft.VisualBasic.FileIO.SearchOption.SearchAllSubDirectories);
+        foreach (string x in MENU.getDirectories(glob.keyLess).Values)
         // d1'i belirle.
+        {
+                var x1 = MENU.getFiles(x);
+                x1.ToList().ForEach(y=>d1.Add(y.Key,y.Value));
+        }
 
         foreach (string x in MENU.getDirectories(glob.keyLess).Values)
         // d2'yi belirle - aşama 1.
         {
-                var x1 = (MENU.getDirectories(x));
+                var x1 = MENU.getDirectories(x);
                 x1.ToList().ForEach(y=>d2.Add(y.Key,y.Value));
         }
         
