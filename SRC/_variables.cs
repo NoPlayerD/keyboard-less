@@ -16,3 +16,10 @@ public static class glob
     public static string[] excludeOfRoot { get; set; }
     public static string[] excludeOfBranch { get; set; }
 }
+
+public static class VARs
+{
+   public static string _path_appData {get;} = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    public static string _path_keyless {get;} = _path_appData + @"/.KEYBOARDLESS";
+    public static string _path_appStartup {get;} = AppDomain.CurrentDomain.BaseDirectory;
+}

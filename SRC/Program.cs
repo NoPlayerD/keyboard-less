@@ -8,10 +8,6 @@ using Spectre.Console;
 
 //=====GLOBAL=========================================================================================
 #region GLOBAL
-string _path_appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-string _path_keyless = _path_appData + @"/.KEYBOARDLESS";
-string _path_appStartup = AppDomain.CurrentDomain.BaseDirectory;
-
 string _title = @"
   _  __          _                   
  | |/ /         | |                  
@@ -35,12 +31,7 @@ glob.excludeOfBranch = ["""/".."""];
 //=====RUNTIME========================================================================================
 
 Console.Title = "KeyboardLess";
-Methods.checkJson();
-if (glob.runLocal == true)
-  {glob.keyLess = _path_appStartup;}
-else
-  {glob.keyLess = _path_keyless;}
-
+Methods.checknDefineJson();
 Methods.checknCreate();
 
 WAVES.START();

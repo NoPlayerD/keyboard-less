@@ -78,6 +78,10 @@ static void RunRoot()
         MENU.ExecuteItem(glob.keyLess);
         RunRoot();
     }
+    else if(glob.root.selectedName == glob.excludeOfRoot[3])
+    {
+        MENU.createPrefsMenu(Methods.readLocalJson());
+    }
     else
         {RunBranch(glob.root.selectedPath);}
         // çıkmak istemeyen, seçtiği şık ile devam eder.
@@ -220,6 +224,41 @@ public static void InspectItem (string path, ENV Venvironment,bool isSIA)
         // seçilmiş olarak veya en son işlem olarak geriye, aynı kategoriye dönme.
 }
 
+
+public static void createPrefsMenu(bool jsonState)
+{
+        string[] choices = {"Run Locally? - FALSE", "Run Locally? - TRUE"};
+        
+        int state;
+        if (jsonState == true) {state = 1;}
+        else {state = 0;}
+
+        Console.Clear();
+
+        var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
+        .AddChoices(glob.excludeOfBranch[0])
+        .AddChoices(choices[state]));
+        // menümüzü oluşturalım :)
+
+        if (menu == choices[state])
+        {
+                bool old = Methods.readLocalJson();
+                bool newer;
+                if (old == false){newer = true;}
+                else {newer = false;}
+                
+                File.Delete(Methods.myJson);
+                Methods.createJson(Methods.myJson, newer);
+
+                Methods.checknDefineJson();
+        }
+        else
+        {WAVES.START();
+        return;}
+
+        createPrefsMenu(Methods.readLocalJson());
+}
+
 //==================================================
 
 public static Dictionary<string,string> getFiles(string path, Microsoft.VisualBasic.FileIO.SearchOption searchOption)
@@ -274,26 +313,31 @@ private static string GetMainPath(string path)
         return me;
 }
 }
-
 //==============================================================================================================
 
 public class Methods
 {
+     public static string myJson {get;} = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json");
+
     public static void checknCreate()
     {
     // belirlenen klasör var mı? yok ise oluştur.
         if (!Directory.Exists(glob.keyLess))
         {Directory.CreateDirectory(glob.keyLess);}
     }
-    public static void checkJson()
+    public static void checknDefineJson()
     {
-        string myJson = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json");
-        
         if (!File.Exists(myJson))
-                {createJson(myJson);
+                {createJson(myJson, false);
                 glob.runLocal = readLocalJson();}
         else
                 {glob.runLocal = readLocalJson();}
+
+        if (glob.runLocal == true)
+                {glob.keyLess = VARs._path_appStartup;}
+        else
+                {glob.keyLess = VARs._path_keyless;}
+
     }
     public static void siaStartLine()
     // search in all - dictionary'lerin belirlendiği başlangıç alanı.
@@ -320,8 +364,7 @@ public class Methods
 
         WAVES.siaMenuCreator(glob.keyLess);
     }
-
-    private static void createJson(string json)
+    public static void createJson(string json, bool state)
     {
         var options = new JsonWriterOptions { Indented = true };
         using (var stream = File.Create (json))
@@ -330,13 +373,12 @@ public class Methods
                 writer.WriteStartObject();
                 // Property name and value specified in one call
                 /// writer.WritePropertyName("runLocal?");
-                writer.WriteBoolean("runLocal?",false);
+                writer.WriteBoolean("runLocal?",state);
                 // writer.WriteCommentValue ("Run application on binary(local) path? or default path?");
                 writer.WriteEndObject();
         }
 
     }
-
     public static bool readLocalJson()
     {
         byte[] data = File.ReadAllBytes (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json"));
