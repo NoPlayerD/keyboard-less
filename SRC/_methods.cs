@@ -254,7 +254,7 @@ public static void createPrefsMenu(bool jsonState)
                 File.Delete(Methods.myJson);
                 Methods.createJson(Methods.myJson, newer);
 
-                Methods.checknDefineJson();
+                Methods.checkAndDefineJson();
         }
         else
         {WAVES.START();
@@ -324,13 +324,13 @@ public class Methods
 {
      public static string myJson {get;} = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json");
 
-    public static void checknCreate()
+    public static void checkDataLocationAndCreate()
     // uygulamanın çalışacağı klasör var mı? yok ise oluştur.
     {
         if (!Directory.Exists(glob.keyLess))
         {Directory.CreateDirectory(glob.keyLess);}
     }
-    public static void checknDefineJson()
+    public static void checkAndDefineJson()
     // json dosyamız var mı diye kontrol eder, yok ise oluşturur, global değerleri atar/günceller
     {
         if (!File.Exists(myJson))

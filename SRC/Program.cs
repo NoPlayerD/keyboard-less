@@ -29,9 +29,10 @@ glob.excludeOfRoot = [
 glob.excludeOfBranch = ["""/".."""];
 #endregion
 //=====RUNTIME========================================================================================
+#region RUNTIME
+Console.Title = "KeyboardLess";// konsol penceresinin başlığını belirler.
+Methods.checkAndDefineJson();// json dosyasını kontrol et ve ayarla.
+Methods.checkDataLocationAndCreate();// kullanılacak uygulama konumunu kontrol et, yok ise oluştur.
 
-Console.Title = "KeyboardLess";
-Methods.checknDefineJson();
-Methods.checknCreate();
-
-WAVES.START();
+WAVES.START();// başlat
+#endregion
