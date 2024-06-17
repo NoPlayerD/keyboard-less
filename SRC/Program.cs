@@ -26,7 +26,10 @@ glob.excludeOfRoot = [
   """|"o  - OPEN LOCATION""",
   """|"p  - PREFERENCES"""
 ];
-glob.excludeOfBranch = ["""/".."""];
+glob.excludeOfBranch = [
+  """/"..""",
+  """|"o - OPEN LOCATION"""
+];
 #endregion
 //=====RUNTIME========================================================================================
 #region RUNTIME

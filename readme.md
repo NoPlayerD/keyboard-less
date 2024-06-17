@@ -1,5 +1,4 @@
-build 'executer'
-
-put 'executer' build files into an 'exec' named folder
-
-put 'exec' named folder near 'SRC' build files
+## To Run:
+- Build the proj "executer".
+- Put the "executer" build files into "exec" named folder.
+- Put the folder near "SRC" build files.

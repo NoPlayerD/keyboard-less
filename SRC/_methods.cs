@@ -108,6 +108,9 @@ static void RunBranch(string getFrom)
     if (glob.branch.selectedName == glob.excludeOfBranch[0])
         {RunRoot();return;}
         // geri dönmek isteyen dönebilir (root'a).
+    else if(glob.branch.selectedName == glob.excludeOfBranch[1])
+    {MENU.ExecuteItem(glob.root.selectedPath);}
+        // seçili kategorinin konumuna git.
     else
     {
         string file = glob.branch.selectedPath;
