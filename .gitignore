@@ -2,6 +2,10 @@ SRC/bin/*
 SRC/obj/*
 SRC/.vs/*
 
+executer/bin/*
+executer/obj/*
+executer/.vs/*
+
 .vs/*
 .vscode/*
 

@@ -5,6 +5,7 @@ using Microsoft.VisualBasic.FileIO;
 using Spectre.Console;
 using System.Text.Json;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 
 class WAVES
@@ -111,7 +112,7 @@ static void RunBranch(string getFrom)
     {
         string file = glob.branch.selectedPath;
         // seçili itemin konumunu 'file' değişkenine ata.
-
+        
         MENU.InspectItem(file, glob.branch,false);
         // seçili itemi incele, kullanıcının seçtiği işlemi uygula.
 
@@ -191,13 +192,13 @@ else
 public static void ExecuteItem(string file)
 // seçili itemi çalıştırma
 {
-        ProcessStartInfo pi = new ProcessStartInfo(file);
-        pi.Arguments = Path.GetFileName(file);
-        pi.UseShellExecute = true;
-        pi.WorkingDirectory = Path.GetDirectoryName(file);
-        pi.FileName = file;
-        pi.Verb = "OPEN";
-        Process.Start(pi);
+        Process p = new Process();
+        p.StartInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,  @"exec\executer.exe");
+        p.StartInfo.Arguments = Path.GetFileName(file.Replace(' ', '?'));
+        p.StartInfo.UseShellExecute = false;
+        //p.Verb = "OPEN";
+        p.StartInfo.WorkingDirectory = Path.GetDirectoryName(file);
+        p.Start();  
 }
 
 public static void InspectItem (string path, ENV Venvironment,bool isSIA)
@@ -214,7 +215,7 @@ public static void InspectItem (string path, ENV Venvironment,bool isSIA)
         else if (toDo == "Open File Location")
         // çıktıya göre dosya konumunu aç.
         {
-                ExecuteItem(GetMainPath(path));
+                ExecuteItem(Path.GetDirectoryName(path));
         }
 
         if (isSIA){Venvironment.selectedPath = glob.keyLess;}
@@ -343,7 +344,7 @@ public class Methods
                 {glob.keyLess = VARs._path_appStartup;}
         else
                 {glob.keyLess = VARs._path_keyless;}
-
+        checkDataLocationAndCreate();
     }
     public static void siaStartLine()
     // search in all - dictionary'lerin belirlendiği başlangıç alanı.
