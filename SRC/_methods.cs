@@ -6,6 +6,7 @@ using Spectre.Console;
 using System.Text.Json;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Collections;
 
 
 class WAVES
@@ -130,7 +131,7 @@ static void RunBranch(string getFrom)
 
 public class MENU
 {
-
+static int anan = 0;
 public static void CreateMenu(string[] choices, ENV virtualEnv)
 {
 
@@ -195,13 +196,36 @@ else
 public static void ExecuteItem(string file)
 // seçili itemi çalıştırma
 {
-        Process p = new Process();
-        p.StartInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,  @"exec\executer.exe");
-        p.StartInfo.Arguments = Path.GetFileName(file.Replace(' ', '?'));
-        p.StartInfo.UseShellExecute = false;
-        //p.Verb = "OPEN";
-        p.StartInfo.WorkingDirectory = Path.GetDirectoryName(file);
-        p.Start();  
+        switch(anan)
+        {
+
+        case 0: //new method (awesome)
+                // CMD komutunu oluştur
+                string command = $"""start /d "{Directory.GetParent(file)}" {Path.GetFileName(file)}""";
+
+                // ProcessStartInfo oluştur
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = "cmd.exe"; // CMD'yi çalıştır
+                psi.Arguments = "/c " + command; // /c argümanı ile komutu çalıştır ve ardından kapat
+
+                // Yeni bir Process oluştur
+                Process process = new Process();
+                process.StartInfo = psi;
+
+                // Process'i başlat
+                process.Start();
+                break;
+
+        case 1: //old method (buggy)
+                Process p = new Process();
+                p.StartInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,  @"exec\executer.exe");
+                p.StartInfo.Arguments = Path.GetFileName(file.Replace(' ', '?'));
+                p.StartInfo.UseShellExecute = false;
+                //p.Verb = "OPEN";
+                p.StartInfo.WorkingDirectory = Path.GetDirectoryName(file);
+                p.Start();  
+                break;
+        }
 }
 
 public static void InspectItem (string path, ENV Venvironment,bool isSIA)
