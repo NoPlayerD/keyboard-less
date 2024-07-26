@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Collections;
+using System.ComponentModel;
 
 
 class WAVES
@@ -15,8 +16,13 @@ class WAVES
 public static void START()
 // uygulamayı başlatma
 {
+
     if (glob.root != null || glob.branch != null || glob.keyLess != null || glob.title != null)
-        {RunRoot();}
+        {
+                Methods.checkAndDefineJson();// json dosyasını kontrol et ve ayarla.
+                Methods.checkDataLocationAndCreate();// kullanılacak uygulama konumunu kontrol et, yok ise oluştur.
+                RunRoot();
+        }
 }
 
 public static void siaMenuCreator(string getFrom)
@@ -252,15 +258,20 @@ public static void InspectItem (string path, ENV Venvironment,bool isSIA)
 }
 
 
-public static void createPrefsMenu(bool jsonState)
+public static void createPrefsMenu(List<bool> jsonState)
 // ayarlar (preferences) menüsünün oluşturulması ve kontrolü..
 {
-        string[] choices = {"Run Locally? - FALSE", "Run Locally? - TRUE"};
+        string[] choices1 = {"Run Locally? - FALSE", "Run Locally? - TRUE"};
+        string[] choices2 = {"Exit After Selection? - FALSE", "Exit After Selection? - TRUE"};
         // 1 seçeneğimiz olacak var 2 farklı türde de olabilir..
 
-        int state;
-        if (jsonState == true) {state = 1;}
-        else {state = 0;}
+        int state1;
+        if (jsonState[0] == true) {state1 = 1;}
+        else {state1 = 0;}
+
+        int state2;
+        if (jsonState[1] == true) {state2 = 1;}
+        else {state2 = 0;}
         // json dosyamızdaki değere göre hangi seçeneğin seçileceğine karar verme.
 
         Console.Clear();
@@ -268,19 +279,41 @@ public static void createPrefsMenu(bool jsonState)
 
         var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .AddChoices(glob.excludeOfBranch[0])
-        .AddChoices(choices[state]));
+        .AddChoices(choices1[state1])
+        .AddChoices(choices2[state2]));
         // menümüzü oluşturalım :)
 
-        if (menu == choices[state])
+        if (menu != glob.excludeOfBranch[0])
         // eğer "o" seçeneği seçersek seçeneği ve dosyayı düzenleme..
         {
-                bool old = Methods.readLocalJson();
+                bool old;
                 bool newer;
-                if (old == false){newer = true;}
-                else {newer = false;}
+
+                 // Read the JSON file
+                string json = File.ReadAllText("prefs.json");
+
+                // Deserialize the JSON into a Person object
+                myJson person = JsonSerializer.Deserialize<myJson>(json);
+
+                if (menu == choices1[state1])
+                {
+                        old= Methods.readLocalJson()[0];
+                        newer = old ? false : true;
+                        person.runLocal = newer;
+                }
+                else
+                {
+                        old  = Methods.readLocalJson()[1];
+                        newer = old ? false : true;
+                        person.exitAfter = newer;
+                }
                 
-                File.Delete(Methods.myJson);
-                Methods.createJson(Methods.myJson, newer);
+               
+                // Serialize the Person object into JSON
+                json = JsonSerializer.Serialize(person);
+
+                // Write the updated JSON to the file
+                File.WriteAllText("prefs.json", json);
 
                 Methods.checkAndDefineJson();
         }
@@ -348,6 +381,12 @@ private static string GetMainPath(string path)
 }
 //==============================================================================================================
 
+public class myJson
+{
+        public bool runLocal { get; set; }
+        public bool exitAfter { get; set; }
+}
+
 public class Methods
 {
      public static string myJson {get;} = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json");
@@ -362,10 +401,18 @@ public class Methods
     // json dosyamız var mı diye kontrol eder, yok ise oluşturur, global değerleri atar/günceller
     {
         if (!File.Exists(myJson))
-                {createJson(myJson, true);
-                glob.runLocal = readLocalJson();}
+                {
+                        myJson my = new myJson{runLocal = true, exitAfter = true};
+                        string json = JsonSerializer.Serialize(my);
+                        File.WriteAllText("prefs.json",json);
+                
+                }
         else
-                {glob.runLocal = readLocalJson();}
+                {
+                        List<bool> p = readLocalJson();
+                        glob.runLocal = p[0];
+                        glob.exitAfter = p[1];
+                }
 
         if (glob.runLocal == true)
                 {glob.keyLess = VARs._path_appStartup;}
@@ -402,42 +449,21 @@ public class Methods
 
         WAVES.siaMenuCreator(glob.keyLess);
     }
-    public static void createJson(string json, bool state)
-    // json dosyamızı oluşturur.
-    {
-        var options = new JsonWriterOptions { Indented = true };
-        using (var stream = File.Create (json))
-        using (var writer = new Utf8JsonWriter (stream, options))
-        {
-                writer.WriteStartObject();
-                // Property name and value specified in one call
-                /// writer.WritePropertyName("runLocal?");
-                writer.WriteBoolean("runLocal?",state);
-                // writer.WriteCommentValue ("Run application on binary(local) path? or default path?");
-                writer.WriteEndObject();
-        }
-
-    }
-    public static bool readLocalJson()
+    
+    public static List<bool> readLocalJson()
     // json dosyamızı okur ve bool değerimizi döndürür.
     {
         byte[] data = File.ReadAllBytes (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json"));
         Utf8JsonReader reader = new Utf8JsonReader (data);
 
-        bool me = false;
+        List<bool> me = new List<bool>();
+        
+        string myjsonfile = File.ReadAllText("prefs.json");
+        myJson tt = JsonSerializer.Deserialize<myJson>(myjsonfile);
 
-        while (reader.Read())
-        {
-        switch (reader.TokenType)
-        {
-        case JsonTokenType.False:
-                me = reader.GetBoolean();
-                break;
-        case JsonTokenType.True:
-                me = reader.GetBoolean();
-                break;
-        }
-        }
+        me.Add(tt.runLocal);
+        me.Add(tt.exitAfter);
+
         return me;
     }
 }

@@ -13,6 +13,7 @@ public static class glob// global değişkenler
     public static string keyLess { get; set; }
     public static string title { get; set; }
     public static bool runLocal {get;set;}
+    public static bool  exitAfter { get; set; }
     public static string[] excludeOfRoot { get; set; }
     public static string[] excludeOfBranch { get; set; }
 }

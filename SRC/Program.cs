@@ -21,21 +21,19 @@ string _title = @"
 
 glob.title = _title;
 glob.excludeOfRoot = [
-  """|"..""", 
-  """|"s  - SEARCH IN ALL""",
-  """|"o  - OPEN LOCATION""",
-  """|"p  - PREFERENCES"""
+  "0|..", 
+  "1|SEARCH IN ALL",
+  "2|OPEN LOCATION",
+  "3|PREFERENCES"
 ];
 glob.excludeOfBranch = [
-  """/"..""",
-  """|"o - OPEN LOCATION"""
+  "0|..",
+  "1|OPEN LOCATION"
 ];
 #endregion
 //=====RUNTIME========================================================================================
 #region RUNTIME
 Console.Title = "KeyboardLess";// konsol penceresinin başlığını belirler.
-Methods.checkAndDefineJson();// json dosyasını kontrol et ve ayarla.
-Methods.checkDataLocationAndCreate();// kullanılacak uygulama konumunu kontrol et, yok ise oluştur.
 
 WAVES.START();// başlat
 #endregion
