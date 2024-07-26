@@ -220,6 +220,7 @@ public static void ExecuteItem(string file)
 
                 // Process'i başlat
                 process.Start();
+                if (glob.exitAfter){Environment.Exit(0);}
                 break;
 
         case 1: //old method (buggy)
