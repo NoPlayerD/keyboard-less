@@ -89,6 +89,13 @@ static void RunRoot()
     {
         MENU.createPrefsMenu(Methods.readLocalJson());
     }
+    else if (glob.root.selectedName == glob.excludeOfRoot[4])
+    {
+        Console.WriteLine("- Folders are categories\n- Folders that ending with .nc are nonCategory items, you can open them like an item and make them seen in the root ");
+        Console.ReadKey();
+        RunRoot();
+        // 'Create' seçeneği
+    }
     else
         {RunBranch(glob.root.selectedPath);}
         // çıkmak istemeyen, seçtiği şık ile devam eder.
@@ -109,6 +116,12 @@ static void RunBranch(string getFrom)
     var choices = glob.branch.dic.Keys.ToArray();
     // choices isimli dizimizi, branch environment'imizdeki dictionary'daki itemlerin isimleri olarak ayarla.
 
+    if (MENU.GetName(getFrom).EndsWith(".nc"))
+    {
+        MENU.ExecuteItem(getFrom);
+        RunRoot();
+        return;
+    }
     MENU.CreateMenu(choices, glob.branch);
     // branch için menümüzü oluşturalım.
 
@@ -156,21 +169,11 @@ else
 // branch mi?
 
 
-string[] exclude;
+string[] exclude = stage ? glob.excludeOfBranch : glob.excludeOfRoot;
 // dosya veya klasör olmayan itemler.
 
-string title;
+string title = stage ? null : glob.title;
 // başlık
-
-
-if (stage == false)
-        {exclude = glob.excludeOfRoot;
-        title = glob.title;} 
-// root ise..
-else 
-        {exclude = glob.excludeOfBranch;
-        title = null;}// define the 'exclude'
-// branch ise
 
 
 var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
@@ -198,7 +201,6 @@ else
 // aktif env. branch ise değişkenleri atayalım (menüdeki seçimimize göre)
 
 }
-
 public static void ExecuteItem(string file)
 // seçili itemi çalıştırma
 {
@@ -356,6 +358,14 @@ public static Dictionary<string,string> getBoth(string path)
         myDic = x2;
 
         return myDic;
+}
+
+public static string GetName(string path)
+{
+        string ex = @"/\";
+        string x = path.Remove(0,path.LastIndexOfAny(ex.ToCharArray()));
+
+        return x;
 }
 
 private static string Inspecting (string path, ENV branch)

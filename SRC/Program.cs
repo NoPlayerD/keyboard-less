@@ -24,7 +24,8 @@ glob.excludeOfRoot = [
   "0|..", 
   "1|SEARCH IN ALL",
   "2|OPEN LOCATION",
-  "3|PREFERENCES"
+  "3|PREFERENCES",
+  "4|CREATE"
 ];
 glob.excludeOfBranch = [
   "0|..",
