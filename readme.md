@@ -1,5 +1,3 @@
 (in development)
-## To Run:
-- Build the proj "executer".
-- Put the "executer" build files into "exec" named folder.
-- Put the folder near "SRC" build files.
+
+if u organize my shitty code then i'll be very happy :D
