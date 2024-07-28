@@ -96,6 +96,11 @@ static void RunRoot()
         RunRoot();
         // 'Create' seçeneği
     }
+    else if (glob.root.selectedName == glob.excludeOfRoot[5])
+    {
+        // separator
+        RunRoot();
+    }
     else
         {RunBranch(glob.root.selectedPath);}
         // çıkmak istemeyen, seçtiği şık ile devam eder.
