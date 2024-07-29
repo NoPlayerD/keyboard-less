@@ -213,9 +213,12 @@ public static void ExecuteItem(string file)
         {
 
         case 0: //new method (awesome)
-                // CMD komutunu oluştur
-                string command = $"""start /d "{Directory.GetParent(file)}" {Path.GetFileName(file)}""";
 
+               // string fileName = $"""\"{}\""";
+
+                // CMD komutunu oluştur
+                string command =$""""start "" "{Directory.GetParent(file)}/{Path.GetFileName(file)}" """";
+                
                 // ProcessStartInfo oluştur
                 ProcessStartInfo psi = new ProcessStartInfo();
                 psi.FileName = "cmd.exe"; // CMD'yi çalıştır
