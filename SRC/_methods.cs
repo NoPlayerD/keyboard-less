@@ -74,15 +74,15 @@ static void RunRoot()
         {Environment.Exit(0);}
         // çıkmak isteyen çıkabilir.
     else if (glob.root.selectedName == glob.excludeOfRoot[1])
-    // tüm kategorilerde mi arican la.
-    {
-        Methods.siaStartLine();
-    }
-    else if(glob.root.selectedName == glob.excludeOfRoot[2])
     // konum açma seçeneği.
     {
         MENU.ExecuteItem(glob.keyLess);
         RunRoot();
+    }
+    else if(glob.root.selectedName == glob.excludeOfRoot[2])
+    // tüm kategorilerde mi arican la.
+    {
+        Methods.siaStartLine();
     }
     else if(glob.root.selectedName == glob.excludeOfRoot[3])
     // ayarlar (preferences) seçeneği.
@@ -136,6 +136,10 @@ static void RunBranch(string getFrom)
     else if(glob.branch.selectedName == glob.excludeOfBranch[1])
     {MENU.ExecuteItem(glob.root.selectedPath);}
         // seçili kategorinin konumuna git.
+    else if (glob.branch.selectedName == glob.excludeOfBranch[2])
+    {
+        RunBranch(getFrom);
+    }
     else
     {
         string file = glob.branch.selectedPath;
@@ -184,7 +188,7 @@ string title = stage ? null : glob.title;
 var menu = AnsiConsole.Prompt(new SelectionPrompt<string>()
         .Title(title)
         .EnableSearch()
-        .PageSize(100)
+        .PageSize(50)
         .AddChoices(exclude)
         .AddChoices(choices));
 // menümüzü oluşturalım :)
