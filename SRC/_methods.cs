@@ -34,12 +34,16 @@ public static void siaMenuCreator(string getFrom)
     var choices = glob.branch.dic.Keys.ToArray();
     // choices isimli dizimizi, branch environment'imizdeki dictionary'daki itemlerin isimleri olarak ayarla.
 
-    MENU.CreateMenu(choices, glob.branch);
+    MENU.CreateMenu(choices, glob.branch, true);
     // branch için menümüzü oluşturalım.
 
     if (glob.branch.selectedName == glob.excludeOfBranch[0])
         {RunRoot();return;}
         // geri dönmek isteyen dönebilir (root'a).
+    else if (glob.branch.selectedName == glob.excludeOfBranch[2])
+    {
+        Methods.siaStartLine();
+    }
     else
     {
         string file;
@@ -67,7 +71,7 @@ static void RunRoot()
     var choices = glob.root.dic.Keys.ToArray();
     // choices isimli dizimizi, root environment'imizdeki dictionary'daki klasör isimleri olarak ayarla.
 
-    MENU.CreateMenu(choices, glob.root);
+    MENU.CreateMenu(choices, glob.root, false);
     // root için menümüzü oluşturalım.
 
     if (glob.root.selectedName == glob.excludeOfRoot[0])
@@ -127,7 +131,7 @@ static void RunBranch(string getFrom)
         RunRoot();
         return;
     }
-    MENU.CreateMenu(choices, glob.branch);
+    MENU.CreateMenu(choices, glob.branch,false);
     // branch için menümüzü oluşturalım.
 
     if (glob.branch.selectedName == glob.excludeOfBranch[0])
@@ -160,7 +164,7 @@ static void RunBranch(string getFrom)
 public class MENU
 {
 static int anan = 0;
-public static void CreateMenu(string[] choices, ENV virtualEnv)
+public static void CreateMenu(string[] choices, ENV virtualEnv, bool SIA)
 {
 
 bool stage;
@@ -180,6 +184,8 @@ else
 
 string[] exclude = stage ? glob.excludeOfBranch : glob.excludeOfRoot;
 // dosya veya klasör olmayan itemler.
+
+if (SIA) {string[] temp = [exclude[0], exclude[2]]; exclude = temp;}
 
 string title = stage ? null : glob.title;
 // başlık
