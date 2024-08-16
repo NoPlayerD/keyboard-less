@@ -318,13 +318,13 @@ public static void createPrefsMenu(List<bool> jsonState)
 
                 if (menu == choices1[state1])
                 {
-                        old= Methods.readLocalJson()[0];
+                        old= Convert.ToBoolean( Methods.readLocalJson()[0]);
                         newer = old ? false : true;
                         person.runLocal = newer;
                 }
                 else
                 {
-                        old  = Methods.readLocalJson()[1];
+                        old  = Convert.ToBoolean( Methods.readLocalJson()[1]);
                         newer = old ? false : true;
                         person.exitAfter = newer;
                 }
@@ -414,6 +414,9 @@ public class myJson
 {
         public bool runLocal { get; set; }
         public bool exitAfter { get; set; }
+        public int maxPageSize { get; set; }
+        public string run { get; set; }
+        public bool showHeader { get; set; }
 }
 
 public class Methods
@@ -438,9 +441,9 @@ public class Methods
                 }
         else
                 {
-                        List<bool> p = readLocalJson();
-                        glob.runLocal = p[0];
-                        glob.exitAfter = p[1];
+                        List<string> p = readLocalJson();
+                        glob.runLocal = Convert.ToBoolean(p[0]);
+                        glob.exitAfter = Convert.ToBoolean(p[0]);;
                 }
 
         if (glob.runLocal == true)
@@ -479,19 +482,20 @@ public class Methods
         WAVES.siaMenuCreator(glob.keyLess);
     }
     
-    public static List<bool> readLocalJson()
+    public static List<string> readLocalJson()
     // json dosyamızı okur ve bool değerimizi döndürür.
     {
         byte[] data = File.ReadAllBytes (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "prefs.json"));
         Utf8JsonReader reader = new Utf8JsonReader (data);
 
-        List<bool> me = new List<bool>();
+        List<string> me = new List<string>();
         
         string myjsonfile = File.ReadAllText("prefs.json");
         myJson tt = JsonSerializer.Deserialize<myJson>(myjsonfile);
 
-        me.Add(tt.runLocal);
-        me.Add(tt.exitAfter);
+        me.Add(tt.runLocal.ToString());
+        me.Add(tt.exitAfter.ToString());
+        me.Add(tt.maxPageSize.ToString());
 
         return me;
     }
