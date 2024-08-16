@@ -13,5 +13,4 @@ public class myFile
 
     public string parentName { get; set; }
     public string parentPath { get; set; }
-
 }

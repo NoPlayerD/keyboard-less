@@ -1,8 +1,7 @@
 public class myMenu
 {
-    public static string title { get; set; }
-    public static bool enableSearch { get; set; }
-    public static int pageSize { get; set; }
-    public static string[] choices { get; set; }
-    
+    public string title { get; set; }
+    public bool enableSearch { get; set; }
+    public int pageSize { get; set; }
+    public string[] choices { get; set; }
 }

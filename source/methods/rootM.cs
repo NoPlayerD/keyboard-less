@@ -1,5 +1,6 @@
 public class rootMethods
 {
+    // returns the directories(type: myFolder) from workingDir*
     public static List<myFolder> getCategories(string from)
     {
         var me = new List<myFolder>();
@@ -13,6 +14,7 @@ public class rootMethods
     }
 
 
+    // returns names of the given categories(type: myFolder)
     public static string[] getNamesOfCategories(List<myFolder> from)
     {
         List<string> x = new List<string>();
@@ -27,6 +29,8 @@ public class rootMethods
         return me;
     }
 
+
+    // creates the root menu and returns the selected category(type: myFolder)
     public static myFolder createMenu(myMenu choices)
     {
         myFolder me = new myFolder();
