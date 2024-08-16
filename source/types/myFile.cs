@@ -7,10 +7,6 @@ public class myFile
     public string pathWithNameWithExt { get; set; }
     public string pathWithNameWithoutExt { get; set; }
 
-    
-    public string pathWithoutName{ get; set; }
-
-
     public string parentName { get; set; }
     public string parentPath { get; set; }
 }

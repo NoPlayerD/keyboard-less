@@ -16,18 +16,8 @@ global.workingDir = prefs.runLocal ? Path.Combine(global.appDomainPath, "local")
 if(!Directory.Exists(sharedMethods.getParentDir(global.workingDir))){Directory.CreateDirectory(sharedMethods.getParentDir(global.workingDir));}
 if(!Directory.Exists(global.workingDir)){Directory.CreateDirectory(global.workingDir);}
 
+creation.createRoot();
 
-// define the menu for creation
-myMenu my = new myMenu
-{
-    title = "KeyLess",
-    enableSearch = true,
-    choices = rootMethods.getNamesOfCategories(rootMethods.getCategories(global.workingDir)),
-    pageSize = 25
-};
-
-
-// create the menu, set the selected folder
-root.selectedFolder = rootMethods.createMenu(my);
+creation.createBranch();
 
 Console.ReadKey();
