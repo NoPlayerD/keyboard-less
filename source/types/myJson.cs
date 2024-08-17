@@ -5,5 +5,6 @@ public class myJson
     public bool showHeader { get; set; }
     public bool inspectWithSelection { get; set; }
     public int pageSize { get; set; }
-
+    public bool showHeaderSeparator { get; set; }
+    public bool showSeparator { get; set; }
 }

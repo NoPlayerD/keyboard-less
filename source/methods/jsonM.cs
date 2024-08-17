@@ -10,37 +10,28 @@ public class jsonMethods
     }
 
 
-    // reads the 'preferences.json' and repairs it if needed
-    public static void repairIfNeeded()
+    // restores the 'prefences.json' file to the defaults
+    public static void restoreDefaults()
     {
-        var me = readMyJson;
+        File.Delete(global.jsonPath);
+        writeMyJson();
+        readMyJson();
     }
 
 
-    // reads 'preferences.json' and returns the value of it
-    public static myJson readMyJson()
+    // reads 'preferences.json' and writes it to 'json'
+    public static void readMyJson()
     {
-        var me = new myJson();
-                
         string jsFile = File.ReadAllText(global.jsonPath);
-        myJson tt = JsonSerializer.Deserialize<myJson>(jsFile);
+        myJson me = JsonSerializer.Deserialize<myJson>(jsFile);
 
-        try
-        {
-            me.runLocal = tt.runLocal;
-            me.exitAfterSelection = tt.exitAfterSelection;
-            me.showHeader = tt.showHeader;
-            me.inspectWithSelection = tt.inspectWithSelection;
-            me.pageSize = tt.pageSize;
-        }
-        catch(Exception ex)
-        {
-            File.Delete(global.jsonPath);
-            writeMyJson();
-            var json = readMyJson();
-        }
-
-        return me;
+        json.runLocal = me.runLocal;
+        json.exitAfterSelection = me.exitAfterSelection;
+        json.showHeader = me.showHeader;
+        json.inspectWithSelection = me.inspectWithSelection;
+        json.pageSize = me.pageSize;
+        json.showHeaderSeparator = me.showHeaderSeparator;
+        json.showSeparator = me.showSeparator;
     }
 
 
@@ -53,7 +44,9 @@ public class jsonMethods
             exitAfterSelection = false,
             showHeader = true,
             inspectWithSelection = true,
-            pageSize = 20
+            pageSize = 20,
+            showHeaderSeparator = true,
+            showSeparator = true
         };
     
         string jsonFile = JsonSerializer.Serialize(json);

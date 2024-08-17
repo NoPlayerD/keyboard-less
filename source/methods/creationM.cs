@@ -1,15 +1,27 @@
-public class creation
+public class creationMethods
 {
 
     // creates the root menu..
     public static void createRoot()
     {
+        List<string> stage = new List<string>();
+            stage.Add(rootExludings.first_Exit);
+            stage.Add(rootExludings.second_OpenLocation);
+            stage.Add(rootExludings.third_SearchInAll);
+            stage.Add(rootExludings.fourth_Preferences);
+            stage.Add(rootExludings.fifth_Create);
+        if(json.showSeparator)
+        {stage.Add(rootExludings.sixth_Separator);}
+
+        foreach(string x in rootMethods.getNamesOfCategories(rootMethods.getCategories(global.workingDir)))
+        {stage.Add(x);}
+
         // define the menu for creation
         myMenu rot = new myMenu
         {
             title = "KeyLess",
             enableSearch = true,
-            choices = rootMethods.getNamesOfCategories(rootMethods.getCategories(global.workingDir)),
+            choices = stage.ToArray(),
             pageSize = 25
         };
 
