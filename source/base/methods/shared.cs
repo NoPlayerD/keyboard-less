@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using Spectre.Console;
 using System.Diagnostics;
 
+using types;
 using variables;
 public static class sharedMethods
 {
@@ -25,7 +26,7 @@ public static class sharedMethods
     
 
     // creates a menu with the given info and returns the selected choice
-    public static string createMenu(types.myMenu choices)
+    public static string createMenu(myMenu choices)
     {
         string me;
 
@@ -64,10 +65,13 @@ public static class sharedMethods
 
         return stage;
     }
+    
+    
+    // execute given file or folder
     public static void EXECUTE(string whatToExecute)
     {
                 // CMD komutunu oluştur
-                string command =$""""start "" "{sharedMethods.getParentDir(whatToExecute)}/{Path.GetFileName(whatToExecute)}" """";
+                string command =$""""start "" "{getParentDir(whatToExecute)}/{Path.GetFileName(whatToExecute)}" """";
                 
                 // ProcessStartInfo oluştur
                 ProcessStartInfo psi = new ProcessStartInfo();
@@ -81,4 +85,67 @@ public static class sharedMethods
                 // Process'i başlat
                 process.Start();
     }
+
+
+        // returns the directories(type: myFolder)
+    public static List<myFolder> getFolders(string from)
+    {
+        var me = new List<myFolder>();
+
+        foreach (string dir in Directory.GetDirectories(from))
+        {
+            me.Add(new myFolder{name =sharedMethods.directoryNameWithoutParent(dir),path=dir});
+        }
+        
+        return me;
+    }
+
+        // returns the files(type: types.myFile)
+    public static List<myFile> getFiles(string from)
+    {
+        var me = new List<myFile>();
+
+        foreach (string mFile in Directory.GetFiles(from))
+        {
+            me.Add(new myFile
+                {
+                    nameWithExt = Path.GetFileName(mFile),
+                    nameWithoutExt = Path.GetFileNameWithoutExtension(mFile),
+
+                    pathWithNameWithExt = mFile,
+                    pathWithNameWithoutExt = Path.Combine(sharedMethods.getParentDir(mFile), Path.GetFileNameWithoutExtension(mFile)),
+
+                    parentPath = sharedMethods.getParentDir(mFile),
+                    parentName = sharedMethods.directoryNameWithoutParent(sharedMethods.getParentDir(mFile))
+                });
+        }
+
+        return me;
+    }
+
+
+    // returns a string array with the names of folders & files from given path and sets the given lists of 'myFile' and 'myFolder' according to the datas
+    public static string[] getBothNames_setBothData(string from, List<myFile> filesList, List<myFolder> foldersList)
+    {
+        var x1 = getFolders(from);
+        var x2 = getFiles(from);
+        
+        var y = new List<string>();
+
+        for(int i = 0; i<x1.Count;i++)
+        {
+            y.Add(x1[i].name);
+        }
+        for(int i = 0; i<x2.Count;i++)
+        {
+            y.Add(x2[i].nameWithExt);
+        }
+
+        foldersList = x1;
+        filesList = x2;
+
+        y.Sort();
+        return y.ToArray();
+    }
+
 }

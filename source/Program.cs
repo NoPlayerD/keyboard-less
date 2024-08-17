@@ -1,5 +1,7 @@
 ﻿using Spectre.Console;
 
+using variables;
+
 // json file exists? if not: create
 if(!jsonMethods.checkIfJsonExists()){jsonMethods.writeMyJson();}
 
@@ -18,5 +20,3 @@ if(!Directory.Exists(global.workingDir)){Directory.CreateDirectory(global.workin
 
 creationMethods.createRoot();
     analysisMethods.analysisRoot();
-
-Console.ReadKey();

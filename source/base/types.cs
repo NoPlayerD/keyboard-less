@@ -32,6 +32,8 @@ public class myJson
     public int pageSize { get; set; }
     public bool showHeaderSeparator { get; set; }
     public bool showSeparator { get; set; }
+    public bool includeNonCategoriesTo_SearchInAll { get; set; }
+    public bool enableSearch { get; set; }
 }
 
 

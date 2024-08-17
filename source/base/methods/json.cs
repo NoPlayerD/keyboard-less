@@ -34,10 +34,12 @@ public class jsonMethods
         json.pageSize = me.pageSize;
         json.showHeaderSeparator = me.showHeaderSeparator;
         json.showSeparator = me.showSeparator;
+        json.includeNonCategoriesTo_SearchInAll = me.includeNonCategoriesTo_SearchInAll;
+        json.enableSearch = me.enableSearch;
     }
 
 
-    // writes the 'preferences.json' from zero
+    // writes the 'preferences.json' as defaults
     public static void writeMyJson()
     {
         myJson json = new myJson
@@ -48,7 +50,9 @@ public class jsonMethods
             inspectWithSelection = true,
             pageSize = 20,
             showHeaderSeparator = true,
-            showSeparator = true
+            showSeparator = true,
+            includeNonCategoriesTo_SearchInAll = false,
+            enableSearch = true
         };
     
         string jsonFile = JsonSerializer.Serialize(json);

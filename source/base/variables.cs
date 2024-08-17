@@ -1,13 +1,6 @@
 namespace variables;
 
-public static class branch
-{
-    public static List<types.myFile> files { get; set; } = new List<types.myFile>();
-    public static types.myFile selectedFile { get; set; }
-}
-
-
-
+using types;
 public static class rootExludings
 {
     public static string first_Exit { get; }            =   "0|.."                  ;
@@ -29,12 +22,37 @@ public static class json
     public static int pageSize { get; set; }
     public static bool showHeaderSeparator { get; set; }
     public static bool showSeparator { get; set; }
+    public static bool includeNonCategoriesTo_SearchInAll { get; set; }
+    public static bool enableSearch { get; set; }
 }
 
 
 
 public static class root
 {
-    public static List<types.myFolder> categories { get; set; } = new List<types.myFolder>();
-    public static types.myFolder selectedFolder { get; set; }
+    public static List<myFolder> categories { get; set; } = new List<myFolder>();
+    public static myFolder selectedFolder { get; set; }
+}
+
+
+
+public static class branch
+{
+    public static List<myFile> files { get; set; } = new List<myFile>();
+    public static myFile selectedFile { get; set; }
+}
+
+
+public static class sia // search in all
+{
+    public static List<myFile> files {get; set;} = new List<myFile>();
+    public static List<myFolder> folders { get; set; } = new List<myFolder>();
+}
+
+public static class global
+{
+    public static string workingDir { get; set; }
+    public static string appDomainPath { get; } =AppDomain.CurrentDomain.BaseDirectory;
+    public static string AppDataPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    public static string jsonPath { get; set; } = Path.Combine(global.appDomainPath,"preferences.json");
 }

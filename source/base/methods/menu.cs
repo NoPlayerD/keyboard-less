@@ -4,30 +4,6 @@ using types;
 using variables;
 public class branchMethods
 {
-    // returns the files(type: types.myFile) from selected category
-    public static List<myFile> getFiles(string from)
-    {
-        var me = new List<myFile>();
-
-        foreach (string mFile in Directory.GetFiles(from))
-        {
-            me.Add(new myFile
-                {
-                    nameWithExt = Path.GetFileName(mFile),
-                    nameWithoutExt = Path.GetFileNameWithoutExtension(mFile),
-
-                    pathWithNameWithExt = mFile,
-                    pathWithNameWithoutExt = Path.Combine(sharedMethods.getParentDir(mFile), Path.GetFileNameWithoutExtension(mFile)),
-
-                    parentPath = sharedMethods.getParentDir(mFile),
-                    parentName = sharedMethods.directoryNameWithoutParent(sharedMethods.getParentDir(mFile))
-                });
-        }
-
-        return me;
-    }
-
-
     // returns the names of files from given list
     public static string[] getNamesOfFiles(List<myFile> from)
     {
@@ -65,24 +41,10 @@ public class branchMethods
 
 }
 
-
+// ====================================================================================================
 
 public class rootMethods
 {
-    // returns the directories(type: myFolder) from workingDir*
-    public static List<myFolder> getCategories(string from)
-    {
-        var me = new List<myFolder>();
-
-        foreach (string dir in Directory.GetDirectories(from))
-        {
-            me.Add(new myFolder{name =sharedMethods.directoryNameWithoutParent(dir),path=dir});
-        }
-        
-        return me;
-    }
-
-
     // returns names of the given categories(type: myFolder)
     public static string[] getNamesOfCategories(List<myFolder> from)
     {
@@ -98,6 +60,20 @@ public class rootMethods
         return me;
     }
 
+
+    public static string[] getPathsOfCategories(List<myFolder> from)
+    {
+        List<string> x = new List<string>();
+        string[] me;
+
+        for (int i = 0; i < from.Count; i++)
+        {
+            x.Add(from[i].path);
+        }
+
+        me = x.ToArray();
+        return me;
+    }
 
     // creates the root menu and returns the selected category(type: myFolder)
     public static myFolder createMenu(myMenu choices)

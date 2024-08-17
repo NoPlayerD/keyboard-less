@@ -32,11 +32,11 @@ public class analysisMethods
                 break;
             
             case 1:
-                sharedMethods.EXECUTE(global.workingDir);
+                subMenu.second_OpenLocation();
                 break;
 
             case 2:
-                // search in all
+                subMenu.third_SearchInAll();
                 break;
 
             case 3:

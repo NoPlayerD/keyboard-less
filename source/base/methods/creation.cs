@@ -11,7 +11,7 @@ public class creationMethods
         
         List<string> stage = sharedMethods.returnRootExcludings(json.showSeparator);
 
-        foreach(string x in rootMethods.getNamesOfCategories(rootMethods.getCategories(global.workingDir)))
+        foreach(string x in rootMethods.getNamesOfCategories(sharedMethods.getFolders(global.workingDir)))
         {stage.Add(x);}
 
         // define the menu for creation
@@ -37,7 +37,7 @@ public class creationMethods
         {
             title = null,
             enableSearch = true,
-            choices = branchMethods.getNamesOfFiles(branchMethods.getFiles(root.selectedFolder.path)),
+            choices = branchMethods.getNamesOfFiles(sharedMethods.getFiles(root.selectedFolder.path)),
             pageSize = 25
         };
 
