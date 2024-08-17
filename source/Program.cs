@@ -19,6 +19,4 @@ if(!Directory.Exists(global.workingDir)){Directory.CreateDirectory(global.workin
 creationMethods.createRoot();
     analysisMethods.analysisRoot();
 
-creationMethods.createBranch();
-
 Console.ReadKey();

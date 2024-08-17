@@ -1,9 +1,10 @@
-using System.Net.Http.Headers;
-using System.Reflection.Metadata.Ecma335;
+namespace menuMethods;
 
+using types;
+using variables;
 public class branchMethods
 {
-    // returns the files(type: myFile) from selected category
+    // returns the files(type: types.myFile) from selected category
     public static List<myFile> getFiles(string from)
     {
         var me = new List<myFile>();
@@ -41,7 +42,7 @@ public class branchMethods
     }
 
 
-    // creates the branch menu and returns the selected file(type: myFile)
+    // creates the branch menu and returns the selected file(type: types.myFile)
     public static myFile createMenu(myMenu choices)
     {
         var me = new myFile();
@@ -61,5 +62,53 @@ public class branchMethods
 
         return me;
     }
+
+}
+
+
+
+public class rootMethods
+{
+    // returns the directories(type: myFolder) from workingDir*
+    public static List<myFolder> getCategories(string from)
+    {
+        var me = new List<myFolder>();
+
+        foreach (string dir in Directory.GetDirectories(from))
+        {
+            me.Add(new myFolder{name =sharedMethods.directoryNameWithoutParent(dir),path=dir});
+        }
+        
+        return me;
+    }
+
+
+    // returns names of the given categories(type: myFolder)
+    public static string[] getNamesOfCategories(List<myFolder> from)
+    {
+        List<string> x = new List<string>();
+        string[] me;
+
+        for (int i = 0; i < from.Count; i++)
+        {
+            x.Add(from[i].name);
+        }
+
+        me = x.ToArray();
+        return me;
+    }
+
+
+    // creates the root menu and returns the selected category(type: myFolder)
+    public static myFolder createMenu(myMenu choices)
+    {
+        myFolder me = new myFolder();
+
+        me.name = sharedMethods.createMenu(choices);
+        me.path = Path.Combine(global.workingDir,me.name);
+
+        return me;
+    }
+
 
 }

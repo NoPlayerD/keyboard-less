@@ -1,6 +1,8 @@
 using System.Runtime.InteropServices;
 using Spectre.Console;
+using System.Diagnostics;
 
+using variables;
 public static class sharedMethods
 {
     // returns the name of the given directory without it's parent
@@ -23,7 +25,7 @@ public static class sharedMethods
     
 
     // creates a menu with the given info and returns the selected choice
-    public static string createMenu(myMenu choices)
+    public static string createMenu(types.myMenu choices)
     {
         string me;
 
@@ -62,5 +64,21 @@ public static class sharedMethods
 
         return stage;
     }
+    public static void EXECUTE(string whatToExecute)
+    {
+                // CMD komutunu oluştur
+                string command =$""""start "" "{sharedMethods.getParentDir(whatToExecute)}/{Path.GetFileName(whatToExecute)}" """";
+                
+                // ProcessStartInfo oluştur
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = "cmd.exe"; // CMD'yi çalıştır
+                psi.Arguments = "/c " + command; // /c argümanı ile komutu çalıştır ve ardından kapat
 
+                // Yeni bir Process oluştur
+                Process process = new Process();
+                process.StartInfo = psi;
+
+                // Process'i başlat
+                process.Start();
+    }
 }

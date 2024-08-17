@@ -1,5 +1,7 @@
 using System.Text.Json;
 
+using variables;
+using types;
 public class jsonMethods
 {
     // returns a bool ('preferences.json' exists?)
