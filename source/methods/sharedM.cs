@@ -47,4 +47,20 @@ public static class sharedMethods
         return me;
     }
 
+
+    // returns a list of rootExcludings
+    public static List<string> returnRootExcludings(bool showSeparator)
+    {
+        List<string> stage = new List<string>();
+            stage.Add(rootExludings.first_Exit);
+            stage.Add(rootExludings.second_OpenLocation);
+            stage.Add(rootExludings.third_SearchInAll);
+            stage.Add(rootExludings.fourth_Preferences);
+            stage.Add(rootExludings.fifth_Create);
+        if(showSeparator)
+        {stage.Add(rootExludings.sixth_Separator);}
+
+        return stage;
+    }
+
 }

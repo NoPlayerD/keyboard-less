@@ -17,6 +17,7 @@ if(!Directory.Exists(sharedMethods.getParentDir(global.workingDir))){Directory.C
 if(!Directory.Exists(global.workingDir)){Directory.CreateDirectory(global.workingDir);}
 
 creationMethods.createRoot();
+    analysisMethods.analysisRoot();
 
 creationMethods.createBranch();
 
