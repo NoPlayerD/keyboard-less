@@ -21,14 +21,7 @@ public class subMenusMethods(bool isThisRoot)
     {
         if (isThisRoot)
         {
-            var menu = new myMenu()
-            {
-                title = null,
-                enableSearch = json.enableSearch,
-                pageSize = json.pageSize,
-                choices = getItemsOf_SearchInAll()
-            };
-            var x = sharedMethods.createMenu(menu);
+            creationMethods.createSIA(getItemsOf_SearchInAll());
         }
     }
 

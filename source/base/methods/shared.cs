@@ -94,7 +94,7 @@ public static class sharedMethods
 
         foreach (string dir in Directory.GetDirectories(from))
         {
-            me.Add(new myFolder{name =sharedMethods.directoryNameWithoutParent(dir),path=dir});
+            me.Add(new myFolder{name =directoryNameWithoutParent(dir),path=dir});
         }
         
         return me;
@@ -134,11 +134,11 @@ public static class sharedMethods
 
         for(int i = 0; i<x1.Count;i++)
         {
-            y.Add(x1[i].name);
+            y.Add(Path.Combine(directoryNameWithoutParent(getParentDir(x1[i].path)), x1[i].name));
         }
         for(int i = 0; i<x2.Count;i++)
         {
-            y.Add(x2[i].nameWithExt);
+            y.Add(Path.Combine(x2[i].parentName, x2[i].nameWithExt));
         }
 
         foldersList = x1;

@@ -17,8 +17,11 @@ public class analysisMethods
         for (int i = 0; i<x.Count;i++)
         {
             if(y == x[i])
-            {rootCaught(i,x,z);}
+            {rootCaught(i,x,z);
+            return;}
         }     
+
+        creationMethods.createBranch();
     }
 
 
@@ -50,12 +53,13 @@ public class analysisMethods
             case 5:
                 creationMethods.createRoot();
                 break;
-
-            default:
-                creationMethods.createBranch();
-                break;
         }
     }
 
+
+    public static void analysisSIA()
+    {
+
+    }
 
 }

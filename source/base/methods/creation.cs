@@ -1,6 +1,7 @@
 using variables;
 using types;
 using menuMethods;
+using System.Security.Cryptography;
 
 public class creationMethods
 {
@@ -20,7 +21,7 @@ public class creationMethods
             title = "KeyLess",
             enableSearch = true,
             choices = stage.ToArray(),
-            pageSize = 25
+            pageSize = json.pageSize
         };
 
 
@@ -42,6 +43,23 @@ public class creationMethods
         };
 
         branch.selectedFile = branchMethods.createMenu(brach);
+    }
+
+
+    public static void createSIA(string[] Bchoices)
+    {
+
+        List<string> choices = new List<string>{siaExcludings.first_goBack, siaExcludings.second_Separator};
+        Bchoices.ToList<string>().ForEach(x=>choices.Add(x));
+        
+        var menu = new myMenu()
+        {
+            title = null,
+            enableSearch = json.enableSearch,
+            pageSize = json.pageSize,
+            choices = choices.ToArray()
+        };
+        var x = sharedMethods.createMenu(menu);
     }
 
 }

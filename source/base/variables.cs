@@ -12,6 +12,20 @@ public static class rootExludings
 }
 
 
+public static class branchExcludings
+{
+    public static string first_goBack {get;}            =   "0|..";
+    public static string second_OpenLocation { get;}    =   "1|OpenLocation";
+    public static string third_Separator { get; }       =   "====================";
+}
+
+
+public static class siaExcludings
+{
+    public static string first_goBack {get;}            =   "0|..";
+    public static string second_Separator { get; }       =   "====================";
+}
+
 
 public static class json
 {
