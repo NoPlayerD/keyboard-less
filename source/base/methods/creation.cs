@@ -27,6 +27,7 @@ public class creationMethods
 
         // create the menu, get the selected folder
         root.selectedFolder = rootMethods.createMenu(rot);
+        analysisMethods.analysisRoot();
     }
 
 
@@ -46,11 +47,11 @@ public class creationMethods
     }
 
 
-    public static void createSIA(string[] Bchoices)
+    // creates the 'search in all' menu..
+    public static void createSIA()
     {
-
         List<string> choices = new List<string>{siaExcludings.first_goBack, siaExcludings.second_Separator};
-        Bchoices.ToList<string>().ForEach(x=>choices.Add(x));
+        sharedMethods.getItemsOf_SearchInAll().ToList<string>().ForEach(x=>choices.Add(x));
         
         var menu = new myMenu()
         {
@@ -60,6 +61,9 @@ public class creationMethods
             choices = choices.ToArray()
         };
         var x = sharedMethods.createMenu(menu);
+
+        sia.selectedItem = x;
+        analysisMethods.analysisSIA();
     }
 
 }

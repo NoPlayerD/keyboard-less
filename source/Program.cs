@@ -18,5 +18,5 @@ global.workingDir = json.runLocal ? Path.Combine(global.appDomainPath, "local") 
 if(!Directory.Exists(sharedMethods.getParentDir(global.workingDir))){Directory.CreateDirectory(sharedMethods.getParentDir(global.workingDir));}
 if(!Directory.Exists(global.workingDir)){Directory.CreateDirectory(global.workingDir);}
 
+// start the magic..
 creationMethods.createRoot();
-    analysisMethods.analysisRoot();

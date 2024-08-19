@@ -61,6 +61,7 @@ public class rootMethods
     }
 
 
+    // returns the paths of the given list<myFolder>
     public static string[] getPathsOfCategories(List<myFolder> from)
     {
         List<string> x = new List<string>();
@@ -75,6 +76,7 @@ public class rootMethods
         return me;
     }
 
+
     // creates the root menu and returns the selected category(type: myFolder)
     public static myFolder createMenu(myMenu choices)
     {
@@ -85,6 +87,5 @@ public class rootMethods
 
         return me;
     }
-
 
 }

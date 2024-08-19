@@ -61,6 +61,7 @@ public static class sia // search in all
 {
     public static List<myFile> files {get; set;} = new List<myFile>();
     public static List<myFolder> folders { get; set; } = new List<myFolder>();
+    public static string selectedItem { get; set; }
 }
 
 public static class global
@@ -69,4 +70,12 @@ public static class global
     public static string appDomainPath { get; } =AppDomain.CurrentDomain.BaseDirectory;
     public static string AppDataPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
     public static string jsonPath { get; set; } = Path.Combine(global.appDomainPath,"preferences.json");
+}
+
+
+public static class inspectItems
+{
+    public static string first_EXEUTE { get; }          =   "1|Execute";
+    public static string second_Exit { get; }           =   "2|GoBack..";
+    public static string third_OpenLocation { get; }    =   "2|OpenLocation";
 }

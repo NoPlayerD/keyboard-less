@@ -87,7 +87,7 @@ public static class sharedMethods
     }
 
 
-        // returns the directories(type: myFolder)
+    // returns the directories(type: myFolder)
     public static List<myFolder> getFolders(string from)
     {
         var me = new List<myFolder>();
@@ -100,7 +100,8 @@ public static class sharedMethods
         return me;
     }
 
-        // returns the files(type: types.myFile)
+
+    // returns the files(type: types.myFile)
     public static List<myFile> getFiles(string from)
     {
         var me = new List<myFile>();
@@ -146,6 +147,63 @@ public static class sharedMethods
 
         y.Sort();
         return y.ToArray();
+    }
+
+
+    public static List<string> returnSiaExcludings(bool showSeparator)
+    {
+        List<string> stage = new List<string>();
+            stage.Add(siaExcludings.first_goBack);
+        if(showSeparator)
+        {stage.Add(rootExludings.sixth_Separator);}
+
+        return stage;
+    }
+
+
+    public static string[] getItemsOf_SearchInAll()
+    {
+        var me = new List<string>();
+
+        foreach (string x in Directory.GetDirectories(global.workingDir))
+        {
+            var y = getBothNames_setBothData(x, sia.files, sia.folders);
+            y.ToList<string>().ForEach(x=>me.Add(x));
+        }        
+
+        return me.ToArray();
+    }
+
+
+    public static void afterSelection(string path, bool isThisSIA)
+    {
+        if(json.inspectWithSelection)
+        {
+            var menu = new myMenu
+            {
+                title = directoryNameWithoutParent(path),
+                enableSearch = json.enableSearch,
+                pageSize = json.pageSize,
+                choices = returnInspectItems().ToArray()
+            };
+
+            var result = createMenu(menu);
+            analysisMethods.analysisInspect(result, path, isThisSIA);
+        }
+        else
+        {
+            EXECUTE(path);
+        }
+    }
+
+    public static List<string> returnInspectItems()
+    {
+        List<string> me = new List<string>();
+            me.Add(inspectItems.first_EXEUTE);
+            me.Add(inspectItems.second_Exit);
+            me.Add(inspectItems.third_OpenLocation);
+
+            return me;
     }
 
 }
