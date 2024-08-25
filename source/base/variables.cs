@@ -53,7 +53,8 @@ public static class root
 public static class branch
 {
     public static List<myFile> files { get; set; } = new List<myFile>();
-    public static myFile selectedFile { get; set; }
+    public static List<myFolder> folders { get; set; } = new List<myFolder>();
+    public static string selectedPath { get; set; }
 }
 
 
@@ -77,5 +78,5 @@ public static class inspectItems
 {
     public static string first_EXEUTE { get; }          =   "1|Execute";
     public static string second_Exit { get; }           =   "2|GoBack..";
-    public static string third_OpenLocation { get; }    =   "2|OpenLocation";
+    public static string third_OpenLocation { get; }    =   "3|OpenLocation";
 }

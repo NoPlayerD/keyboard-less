@@ -4,6 +4,8 @@ using System.Diagnostics;
 
 using types;
 using variables;
+using System.Globalization;
+using System.Xml.XPath;
 public static class sharedMethods
 {
     // returns the name of the given directory without it's parent
@@ -66,6 +68,16 @@ public static class sharedMethods
         return stage;
     }
     
+    public static List<string> returnBranchExcludings(bool showSeparator)
+    {
+        List<string> me = new List<string>();
+            me.Add(branchExcludings.first_goBack);
+            me.Add(branchExcludings.second_OpenLocation);
+        if (showSeparator)
+        {me.Add(branchExcludings.third_Separator);}
+
+        return me;
+    }
     
     // execute given file or folder
     public static void EXECUTE(string whatToExecute)
@@ -126,7 +138,7 @@ public static class sharedMethods
 
 
     // returns a string array with the names of folders & files from given path and sets the given lists of 'myFile' and 'myFolder' according to the datas
-    public static string[] getBothNames_setBothData(string from, List<myFile> filesList, List<myFolder> foldersList)
+    public static string[] getBothNamesWithParentName_setBothData(string from, List<myFile> filesList, List<myFolder> foldersList)
     {
         var x1 = getFolders(from);
         var x2 = getFiles(from);
@@ -145,11 +157,29 @@ public static class sharedMethods
         foldersList = x1;
         filesList = x2;
 
+        
+
         y.Sort();
         return y.ToArray();
     }
 
+    public static string[] getBothNamesWithoutParentName(string from)
+    {
+        var x1 = getFolders(from);
+        var x2 = getFiles(from);
 
+        List<string> y1 = new List<string>();
+            x1.ForEach(x=>y1.Add(x.name));
+
+        List<string> y2 = new List<string>();
+            x2.ForEach(x=>y2.Add(x.nameWithExt));
+
+        List<string> y3 = new List<string>();
+            y1.ForEach(x=>y3.Add(x));
+            y2.ForEach(x=>y3.Add(x));
+            
+        return y3.ToArray();
+    }
     public static List<string> returnSiaExcludings(bool showSeparator)
     {
         List<string> stage = new List<string>();
@@ -167,34 +197,13 @@ public static class sharedMethods
 
         foreach (string x in Directory.GetDirectories(global.workingDir))
         {
-            var y = getBothNames_setBothData(x, sia.files, sia.folders);
+            var y = getBothNamesWithParentName_setBothData(x, sia.files, sia.folders);
             y.ToList<string>().ForEach(x=>me.Add(x));
         }        
 
         return me.ToArray();
     }
 
-
-    public static void afterSelection(string path, bool isThisSIA)
-    {
-        if(json.inspectWithSelection)
-        {
-            var menu = new myMenu
-            {
-                title = directoryNameWithoutParent(path),
-                enableSearch = json.enableSearch,
-                pageSize = json.pageSize,
-                choices = returnInspectItems().ToArray()
-            };
-
-            var result = createMenu(menu);
-            analysisMethods.analysisInspect(result, path, isThisSIA);
-        }
-        else
-        {
-            EXECUTE(path);
-        }
-    }
 
     public static List<string> returnInspectItems()
     {

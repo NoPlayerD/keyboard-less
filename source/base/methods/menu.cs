@@ -19,12 +19,13 @@ public class branchMethods
 
 
     // creates the branch menu and returns the selected file(type: types.myFile)
-    public static myFile createMenu(myMenu choices)
+    public static string createMenu(myMenu choices)
     {
         var me = new myFile();
         
         me.nameWithExt = sharedMethods.createMenu(choices);
         
+        /* === useless for now ===
         var shortcut = me.nameWithExt;
 
         me.pathWithNameWithExt = Path.Combine(sharedMethods.getParentDir(root.selectedFolder.path), shortcut);
@@ -34,9 +35,9 @@ public class branchMethods
         me.parentPath = sharedMethods.getParentDir(me.pathWithNameWithExt);
         me.parentName = sharedMethods.directoryNameWithoutParent(me.parentPath);
 
-        me.pathWithNameWithoutExt = Path.Combine(me.parentPath, me.nameWithoutExt);
+        me.pathWithNameWithoutExt = Path.Combine(me.parentPath, me.nameWithoutExt);*/
 
-        return me;
+        return me.nameWithExt;
     }
 
 }
