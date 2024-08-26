@@ -155,17 +155,19 @@ public class creationMethods
             if (json.showSeparator) {choices.Add(siaExcludings.second_Separator);}
         sharedMethods.getItemsOf_SearchInAll().ToList<string>().ForEach(x=>choices.Add(x));
         
-        if(!json.includeNonCategoriesTo_SearchInAll)
+        if(json.includeNonCategoriesTo_SearchInAll == false)
         {
             for (int i = 0; i<choices.Count;i++)
             {
-                if(choices[i].Contains(@"\"))
+                try
                 {
                     var lastIndex = choices[i].LastIndexOf(@"\");
                     var xx = choices[i].Remove(lastIndex, choices[i].Length - lastIndex);
                     if (xx.EndsWith(".nc"))
                         {choices.RemoveAt(i);}
                 }
+                catch(Exception ex)
+                {}
             }
         }
         var menu = new myMenu()
@@ -276,7 +278,8 @@ public class creationMethods
             + "\nIf not, it uses '%appData%/.keyLess'\n"
             + "\nIf name of a category ends with '.nc', the app will open it as a folder, not like a category.\n"
             + "\nYou can customize application with ur preferences by editing 'preferences.json' file."
-            + "\nMinimum pageSize is 3 btw.\n\n";
+            + "\nMinimum pageSize is 3 btw.\n"
+            + "\nThere musn't be '[]' in the name of any item (for example: '[john] file.exe')\n\n";
     
         Console.WriteLine(info);
         Console.WriteLine("Press any key to go back..");
