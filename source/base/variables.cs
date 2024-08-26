@@ -20,7 +20,7 @@ public static class branchExcludings
 }
 
 
-public static class siaExcludings
+public static class siaExcludings // search in all
 {
     public static string first_goBack {get;}            =   "0|..";
     public static string second_Separator { get; }       =   "====================";
@@ -76,7 +76,7 @@ public static class global
 
 public static class inspectItems
 {
-    public static string first_EXEUTE { get; }          =   "1|Execute";
-    public static string second_Exit { get; }           =   "2|GoBack..";
-    public static string third_OpenLocation { get; }    =   "3|OpenLocation";
+    public static string minus_EXEUTE { get; }          =   "-1|Execute";
+    public static string first_GoBack { get; }          =   "0|GoBack..";
+    public static string second_OpenLocation { get; }   =   "1|OpenLocation";
 }

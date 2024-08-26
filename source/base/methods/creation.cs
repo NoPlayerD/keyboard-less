@@ -101,7 +101,7 @@ public class creationMethods
             pageSize = 25
         };
         
-        branch.selectedPath = Path.Combine(root.selectedFolder.path, branchMethods.createMenu(brach));
+        branch.selectedPath = Path.Combine(root.selectedFolder.path, branchMethods.createMenu(brach).nameWithExt);
 
         analysisBranch();
     }
@@ -134,6 +134,8 @@ public class creationMethods
         }
 
         afterSelection(branch.selectedPath,false);
+        if (!json.exitAfterSelection)
+            {createBranch();}
 
     }
 #endregion
@@ -187,6 +189,8 @@ public class creationMethods
         }
 
         afterSelection(Path.Combine(global.workingDir, sia.selectedItem),true);
+        if(!json.exitAfterSelection)
+            {createSIA();}
     }
 #endregion
 
@@ -231,7 +235,7 @@ public class creationMethods
                         sharedMethods.EXECUTE(path);
                         break;
                     case 1:
-                        if (isThisSIA){creationMethods.createSIA();}
+                        if (isThisSIA){createSIA();}
                         else {createBranch();}
                         break;
                     case 2:
@@ -240,6 +244,7 @@ public class creationMethods
                 }
             }
         }
+        
     }
 #endregion
 }

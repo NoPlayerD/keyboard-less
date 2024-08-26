@@ -4,7 +4,7 @@ using types;
 using variables;
 public class branchMethods
 {
-    // returns the names of files from given list
+    /*// returns the names of files from given list
     public static string[] getNamesOfFiles(List<myFile> from)
     {
         var x = new List<string>();
@@ -15,11 +15,11 @@ public class branchMethods
         }
 
         return x.ToArray();
-    }
+    }*/
 
 
-    // creates the branch menu and returns the selected file(type: types.myFile)
-    public static string createMenu(myMenu choices)
+    // creates the branch menu and returns the selected file(type: myfile)
+    public static myFile createMenu(myMenu choices)
     {
         var me = new myFile();
         
@@ -37,7 +37,7 @@ public class branchMethods
 
         me.pathWithNameWithoutExt = Path.Combine(me.parentPath, me.nameWithoutExt);*/
 
-        return me.nameWithExt;
+        return me;
     }
 
 }
@@ -62,7 +62,7 @@ public class rootMethods
     }
 
 
-    // returns the paths of the given list<myFolder>
+    /*// returns the paths of the given list<myFolder>
     public static string[] getPathsOfCategories(List<myFolder> from)
     {
         List<string> x = new List<string>();
@@ -75,7 +75,7 @@ public class rootMethods
 
         me = x.ToArray();
         return me;
-    }
+    }*/
 
 
     // creates the root menu and returns the selected category(type: myFolder)

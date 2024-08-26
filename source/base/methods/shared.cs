@@ -67,7 +67,9 @@ public static class sharedMethods
 
         return stage;
     }
-    
+
+
+    // returns a list of branchExcludings    
     public static List<string> returnBranchExcludings(bool showSeparator)
     {
         List<string> me = new List<string>();
@@ -79,6 +81,7 @@ public static class sharedMethods
         return me;
     }
     
+
     // execute given file or folder
     public static void EXECUTE(string whatToExecute)
     {
@@ -137,8 +140,23 @@ public static class sharedMethods
     }
 
 
+    // quick usage for 'getBothNamesWithParentName_setBothData'
+    public static string[] getItemsOf_SearchInAll()
+    {
+        var me = new List<string>();
+
+        foreach (string x in Directory.GetDirectories(global.workingDir))
+        {
+            var y = getBothNamesWithParentName_setBothData(x, sia.files, sia.folders);
+            y.ToList<string>().ForEach(x=>me.Add(x));
+        }        
+
+        return me.ToArray();
+    }
+
+
     // returns a string array with the names of folders & files from given path and sets the given lists of 'myFile' and 'myFolder' according to the datas
-    public static string[] getBothNamesWithParentName_setBothData(string from, List<myFile> filesList, List<myFolder> foldersList)
+    private static string[] getBothNamesWithParentName_setBothData(string from, List<myFile> filesList, List<myFolder> foldersList)
     {
         var x1 = getFolders(from);
         var x2 = getFiles(from);
@@ -163,6 +181,8 @@ public static class sharedMethods
         return y.ToArray();
     }
 
+
+    // returns a string array with the names of folders & files from given path
     public static string[] getBothNamesWithoutParentName(string from)
     {
         var x1 = getFolders(from);
@@ -180,6 +200,9 @@ public static class sharedMethods
             
         return y3.ToArray();
     }
+    
+    
+    // returns a list of SearchInAll_Excludings
     public static List<string> returnSiaExcludings(bool showSeparator)
     {
         List<string> stage = new List<string>();
@@ -191,26 +214,13 @@ public static class sharedMethods
     }
 
 
-    public static string[] getItemsOf_SearchInAll()
-    {
-        var me = new List<string>();
-
-        foreach (string x in Directory.GetDirectories(global.workingDir))
-        {
-            var y = getBothNamesWithParentName_setBothData(x, sia.files, sia.folders);
-            y.ToList<string>().ForEach(x=>me.Add(x));
-        }        
-
-        return me.ToArray();
-    }
-
-
+    // returns a list of inspectItem's items
     public static List<string> returnInspectItems()
     {
         List<string> me = new List<string>();
-            me.Add(inspectItems.first_EXEUTE);
-            me.Add(inspectItems.second_Exit);
-            me.Add(inspectItems.third_OpenLocation);
+            me.Add(inspectItems.minus_EXEUTE);
+            me.Add(inspectItems.first_GoBack);
+            me.Add(inspectItems.second_OpenLocation);
 
             return me;
     }
