@@ -11,7 +11,7 @@ jsonMethods.readMyJson();
 
 
 // set working directory according to json
-global.workingDir = json.runLocal ? Path.Combine(global.appDomainPath, "local") : Path.Combine(global.AppDataPath, ".KeyLess");
+global.workingDir = json.runLocal ? Path.Combine(global.appDomainPath, "local") : Path.Combine(global.AppDataPath, ".keyLess");
 
 
 // working dir & working dir's parent dir exist? if not: create

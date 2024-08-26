@@ -2,13 +2,14 @@ using variables;
 using types;
 using menuMethods;
 
+using System;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 public class creationMethods
 {
 
-#region ROOT
+#region ROOT        (menu)
     
 // creates the root menu..
     public static void createRoot()
@@ -22,8 +23,8 @@ public class creationMethods
         // define the menu for creation
         myMenu rot = new myMenu
         {
-            title = "KeyLess",
-            enableSearch = true,
+            title = json.showHeader?global.title:null,
+            enableSearch = json.enableSearch,
             choices = stage.ToArray(),
             pageSize = json.pageSize
         };
@@ -58,31 +59,35 @@ public class creationMethods
                         break;
 
                     case 2:
-                        creationMethods.createSIA();
+                        createSIA();
                         break;
 
+                    /*case 3: // preferences
+                        break;*/
+
                     case 3:
-                        // preferences
+                        showInfo();
                         break;
 
                     case 4:
-                        // create
-                        break;
-
-                    case 5:
-                        creationMethods.createRoot();
-                        break;
+                        createRoot();
+                        break;                       
                 }
-            return;
+                return;
             }
         }     
 
-        creationMethods.createBranch();
+
+        if(root.selectedFolder.name.EndsWith(".nc"))
+            {sharedMethods.EXECUTE(root.selectedFolder.path);}
+        else
+            {createBranch();}
+
     }
 #endregion
 
 
-#region BRANCH
+#region BRANCH      (menu)
 
 // creates the branch menu..
     public static void createBranch()
@@ -96,9 +101,9 @@ public class creationMethods
         myMenu brach = new myMenu
         {
             title = null,
-            enableSearch = true,
+            enableSearch = json.enableSearch,
             choices = x1.ToArray(),
-            pageSize = 25
+            pageSize = json.pageSize
         };
         
         branch.selectedPath = Path.Combine(root.selectedFolder.path, branchMethods.createMenu(brach).nameWithExt);
@@ -141,14 +146,28 @@ public class creationMethods
 #endregion
 
 
-#region SearchInAll
+#region SearchInAll (menu)
 
 // creates the 'search in all' menu..
     public static void createSIA()
     {
-        List<string> choices = new List<string>{siaExcludings.first_goBack, siaExcludings.second_Separator};
+        List<string> choices = new List<string>{siaExcludings.first_goBack};
+            if (json.showSeparator) {choices.Add(siaExcludings.second_Separator);}
         sharedMethods.getItemsOf_SearchInAll().ToList<string>().ForEach(x=>choices.Add(x));
         
+        if(!json.includeNonCategoriesTo_SearchInAll)
+        {
+            for (int i = 0; i<choices.Count;i++)
+            {
+                if(choices[i].Contains(@"\"))
+                {
+                    var lastIndex = choices[i].LastIndexOf(@"\");
+                    var xx = choices[i].Remove(lastIndex, choices[i].Length - lastIndex);
+                    if (xx.EndsWith(".nc"))
+                        {choices.RemoveAt(i);}
+                }
+            }
+        }
         var menu = new myMenu()
         {
             title = null,
@@ -195,7 +214,7 @@ public class creationMethods
 #endregion
 
 
-#region Inspect
+#region Inspect     (menu)
 
 // does whatever needed (inspect or execute) to do after selection (for branch and SIA only)
     private static void afterSelection(string path, bool isThisSIA)
@@ -247,4 +266,24 @@ public class creationMethods
         
     }
 #endregion
+
+
+#region Info        (page)
+    
+    public static void showInfo()
+    {
+        string info = "If 'runningLocal', the app uses 'assemblyLocation/local/' path as data location."
+            + "\nIf not, it uses '%appData%/.keyLess'\n"
+            + "\nIf name of a category ends with '.nc', the app will open it as a folder, not like a category.\n"
+            + "\nYou can customize application with ur preferences by editing 'preferences.json' file."
+            + "\nMinimum pageSize is 3 btw.\n\n";
+    
+        Console.WriteLine(info);
+        Console.WriteLine("Press any key to go back..");
+        Console.ReadKey();
+        Console.Clear();
+        createRoot();
+    }
+#endregion
+
 }

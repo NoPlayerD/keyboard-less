@@ -6,9 +6,9 @@ public static class rootExludings
     public static string first_Exit { get; }            =   "0|.."                  ;
     public static string second_OpenLocation { get; }   =   "1|OpenLocation"        ;
     public static string third_SearchInAll { get; }     =   "2|SearchInAll"         ;
-    public static string fourth_Preferences { get; }    =   "3|Preferences"         ;
-    public static string fifth_Create { get; }          =   "4|Create"              ;
-    public static string sixth_Separator { get; }       =   "===================="  ;
+    // public static string fourth_Preferences { get; }    =   "3|Preferences"         ;
+    public static string fourth_Create { get; }          =   "3|Info"                ;
+    public static string fifth_Separator { get; }       =   "===================="  ;
 }
 
 
@@ -69,8 +69,21 @@ public static class global
 {
     public static string workingDir { get; set; }
     public static string appDomainPath { get; } =AppDomain.CurrentDomain.BaseDirectory;
-    public static string AppDataPath { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-    public static string jsonPath { get; set; } = Path.Combine(global.appDomainPath,"preferences.json");
+    public static string AppDataPath { get; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    public static string jsonPath { get; } = Path.Combine(global.appDomainPath,"preferences.json");
+    public static string title {get;} = @"
+ /$$   /$$                     /$$                                   
+| $$  /$$/                    | $$                                   
+| $$ /$$/   /$$$$$$  /$$   /$$| $$        /$$$$$$   /$$$$$$$ /$$$$$$$
+| $$$$$/   /$$__  $$| $$  | $$| $$       /$$__  $$ /$$_____//$$_____/
+| $$  $$  | $$$$$$$$| $$  | $$| $$      | $$$$$$$$|  $$$$$$|  $$$$$$ 
+| $$\  $$ | $$_____/| $$  | $$| $$      | $$_____/ \____  $$\____  $$
+| $$ \  $$|  $$$$$$$|  $$$$$$$| $$$$$$$$|  $$$$$$$ /$$$$$$$//$$$$$$$/
+|__/  \__/ \_______/ \____  $$|________/ \_______/|_______/|_______/ 
+                     /$$  | $$                                       
+                    |  $$$$$$/                                       
+                     \______/                                        
+";
 }
 
 
@@ -79,4 +92,10 @@ public static class inspectItems
     public static string minus_EXEUTE { get; }          =   "-1|Execute";
     public static string first_GoBack { get; }          =   "0|GoBack..";
     public static string second_OpenLocation { get; }   =   "1|OpenLocation";
+}
+
+
+public static class preferencesItems
+{
+    public static string MyProperty { get;}
 }

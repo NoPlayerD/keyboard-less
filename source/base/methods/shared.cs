@@ -60,10 +60,10 @@ public static class sharedMethods
             stage.Add(rootExludings.first_Exit);
             stage.Add(rootExludings.second_OpenLocation);
             stage.Add(rootExludings.third_SearchInAll);
-            stage.Add(rootExludings.fourth_Preferences);
-            stage.Add(rootExludings.fifth_Create);
+            // stage.Add(rootExludings.fourth_Preferences);
+            stage.Add(rootExludings.fourth_Create);
         if(showSeparator)
-        {stage.Add(rootExludings.sixth_Separator);}
+        {stage.Add(rootExludings.fifth_Separator);}
 
         return stage;
     }
@@ -208,7 +208,7 @@ public static class sharedMethods
         List<string> stage = new List<string>();
             stage.Add(siaExcludings.first_goBack);
         if(showSeparator)
-        {stage.Add(rootExludings.sixth_Separator);}
+        {stage.Add(rootExludings.fifth_Separator);}
 
         return stage;
     }
