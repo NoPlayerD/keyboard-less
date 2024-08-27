@@ -56,6 +56,7 @@ public class creationMethods
                     
                     case 1:
                         sharedMethods.EXECUTE(global.workingDir);
+                        if (!json.exitAfterSelection){createRoot();}
                         // open location
                         break;
 
@@ -126,13 +127,14 @@ public class creationMethods
                 switch (i)
                 {
                     case 0:
-                        creationMethods.createRoot();
+                        createRoot();
                         break;
                     case 1:
                         sharedMethods.EXECUTE($"{root.selectedFolder.path}");
+                        if(!json.exitAfterSelection){createBranch();}
                         break;
                     case 2:
-                        creationMethods.createBranch();
+                        createBranch();
                         break;
                 }
                 return;
@@ -218,11 +220,11 @@ public class creationMethods
                 switch(i)
                 {
                     case 0:
-                        creationMethods.createRoot();
+                        createRoot();
                         break;
 
                     case 1:
-                        creationMethods.createSIA();
+                        createSIA();
                         break;
 
                 }
@@ -235,6 +237,7 @@ public class creationMethods
             {createSIA();}
     }
 #endregion
+
 
 #region Inspect     (menu)
 
