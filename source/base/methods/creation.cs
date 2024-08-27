@@ -5,6 +5,7 @@ using menuMethods;
 using System;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Globalization;
 
 public class creationMethods
 {
@@ -153,8 +154,25 @@ public class creationMethods
     {
         List<string> choices = new List<string>{siaExcludings.first_goBack};
             if (json.showSeparator) {choices.Add(siaExcludings.second_Separator);}
-        sharedMethods.getItemsOf_SearchInAll().ToList<string>().ForEach(x=>choices.Add(x));
         
+        choices.AddRange(sharedMethods.getItemsOf_SearchInAll().ToList());
+        
+        if (!json.includeNonCategoriesTo_SearchInAll)
+        {
+            // Filtering
+            choices = choices.Where(x =>
+            {
+                var lastIndex = x.LastIndexOf(@"\");
+                if (lastIndex >= 0)
+                {
+                    var xx = x.Remove(lastIndex, x.Length - lastIndex);
+                    return !xx.EndsWith(".nc"); // if contains (true), return false
+                }
+                return true;
+            }).ToList();
+        }
+
+        /* old version (not working) 
         if(json.includeNonCategoriesTo_SearchInAll == false)
         {
             for (int i = 0; i<choices.Count;i++)
@@ -163,13 +181,16 @@ public class creationMethods
                 {
                     var lastIndex = choices[i].LastIndexOf(@"\");
                     var xx = choices[i].Remove(lastIndex, choices[i].Length - lastIndex);
+                    
                     if (xx.EndsWith(".nc"))
-                        {choices.RemoveAt(i);}
+                        {choices.Remove(choices[i]);}
                 }
                 catch(Exception ex)
                 {}
             }
-        }
+        }*/
+        
+
         var menu = new myMenu()
         {
             title = null,
@@ -214,7 +235,6 @@ public class creationMethods
             {createSIA();}
     }
 #endregion
-
 
 #region Inspect     (menu)
 
